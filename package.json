@@ -1,0 +1,61 @@
+{
+  "name": "@mdab/ksef-pdf",
+  "version": "0.1.0",
+  "description": "Node.js PDF generator for KSeF FA(1)/FA(2)/FA(3) invoices and UPO XML documents.",
+  "type": "module",
+  "license": "MIT",
+  "author": "mdabrowski25",
+  "homepage": "https://github.com/mdabrowski25/ksef-invoice-manager",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mdabrowski25/ksef-invoice-manager.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mdabrowski25/ksef-invoice-manager/issues"
+  },
+  "keywords": [
+    "ksef",
+    "invoice",
+    "pdf",
+    "xml",
+    "poland"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "LICENSES",
+    "THIRD_PARTY_NOTICES.md"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "pdfmake": "^0.2.20",
+    "xml-js": "^1.6.11"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.14",
+    "@types/pdfmake": "^0.3.2",
+    "tsup": "^8.4.0",
+    "typescript": "^5.8.2",
+    "vitest": "^3.2.4"
+  }
+}
