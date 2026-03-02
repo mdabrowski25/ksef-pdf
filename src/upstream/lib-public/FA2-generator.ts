@@ -1,6 +1,6 @@
 // @ts-nocheck
-import pdfMake, { TCreatedPdf } from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
+import pdfMake, { TCreatedPdf } from 'pdfmake/build/pdfmake.js';
+import pdfFonts from 'pdfmake/build/vfs_fonts.js';
 import { Content, TDocumentDefinitions } from 'pdfmake/interfaces';
 import { generateStyle, getValue, hasValue } from '../shared/PDF-functions';
 import { TRodzajFaktury } from '../shared/consts/const';

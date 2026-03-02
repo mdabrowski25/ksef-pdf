@@ -1,6 +1,6 @@
 // @ts-nocheck
-import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
+import pdfMake from 'pdfmake/build/pdfmake.js';
+import pdfFonts from 'pdfmake/build/vfs_fonts.js';
 import { Upo } from './types/upo-v4_2.types';
 import { TDocumentDefinitions } from 'pdfmake/interfaces';
 import { generateStyle } from '../shared/PDF-functions';

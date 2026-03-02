@@ -1,6 +1,6 @@
-import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
-import { TCreatedPdf } from 'pdfmake/build/pdfmake';
+import pdfMake from 'pdfmake/build/pdfmake.js';
+import pdfFonts from 'pdfmake/build/vfs_fonts.js';
+import type { TCreatedPdf } from 'pdfmake/build/pdfmake.js';
 import { TDocumentDefinitions } from 'pdfmake/interfaces';
 import { generateFA1 } from './upstream/lib-public/FA1-generator';
 import { generateFA2 } from './upstream/lib-public/FA2-generator';

@@ -1,4 +1,4 @@
-# @mdab/ksef-pdf
+# @mdab25/ksef-pdf
 
 Node.js package for generating PDF visualizations from KSeF XML documents.
 
@@ -11,14 +11,14 @@ This package vendors and adapts renderer logic from `CIRFMF/ksef-pdf-generator` 
 ## Install
 
 ```bash
-npm install @mdab/ksef-pdf
+npm install @mdab25/ksef-pdf
 ```
 
 ## Quick Start
 
 ```ts
 import { readFile, writeFile } from 'node:fs/promises';
-import { renderPdfFromXml } from '@mdab/ksef-pdf';
+import { renderPdfFromXml } from '@mdab25/ksef-pdf';
 
 const xml = await readFile('./invoice.xml', 'utf8');
 const pdf = await renderPdfFromXml(xml);
@@ -70,7 +70,7 @@ Compatibility exports (upstream-like):
 
 ```ts
 import express from 'express';
-import { renderPdfFromXml } from '@mdab/ksef-pdf';
+import { renderPdfFromXml } from '@mdab25/ksef-pdf';
 
 const app = express();
 app.use(express.text({ type: ['application/xml', 'text/xml'], limit: '10mb' }));
@@ -115,3 +115,4 @@ This package is licensed under `MIT` (see `LICENSE`).
 It also includes adapted third-party source code. See:
 - `THIRD_PARTY_NOTICES.md`
 - `LICENSES/CIRFMF-ksef-pdf-generator-ISC.txt`
+

@@ -6,7 +6,7 @@ import { Faktura as Faktura2 } from './types/fa2.types';
 import { generateFA3 } from './FA3-generator';
 import { Faktura as Faktura3 } from './types/fa3.types';
 import { parseXML, XmlInput } from '../shared/XML-parser';
-import { TCreatedPdf } from 'pdfmake/build/pdfmake';
+import type { TCreatedPdf } from 'pdfmake/build/pdfmake.js';
 import { AdditionalDataTypes } from './types/common.types';
 
 export async function generateInvoice(
