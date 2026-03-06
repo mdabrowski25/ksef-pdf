@@ -16,7 +16,7 @@ lub budowie własnych narzędzi wokół KSeF?
 Skontaktuj się ze mną – chętnie pomogę w implementacji, integracji lub  
 rozwiązaniu konkretnych problemów technicznych.
 
-LinkedIn: https://www.linkedin.com/in/TWOJ-PROFIL
+LinkedIn: https://www.linkedin.com/in/mateusz-dabrowski25
 
 
 ## Install
