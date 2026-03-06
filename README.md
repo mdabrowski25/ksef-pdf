@@ -8,6 +8,17 @@ Node.js package for generating PDF visualizations from KSeF XML documents.
 
 This package vendors and adapts renderer logic from `CIRFMF/ksef-pdf-generator` for server-side use.
 
+## Wsparcie / Usługi
+
+Potrzebujesz wsparcia przy integracji z KSeF, generowaniu PDF z faktur XML  
+lub budowie własnych narzędzi wokół KSeF?
+
+Skontaktuj się ze mną – chętnie pomogę w implementacji, integracji lub  
+rozwiązaniu konkretnych problemów technicznych.
+
+LinkedIn: https://www.linkedin.com/in/TWOJ-PROFIL
+
+
 ## Install
 
 ```bash
