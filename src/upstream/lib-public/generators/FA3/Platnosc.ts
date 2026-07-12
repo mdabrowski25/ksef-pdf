@@ -27,7 +27,7 @@ export function generatePlatnosc(platnosc: Platnosc | undefined): Content {
     {
       name: 'Termin',
       title: 'Termin płatności',
-      format: FormatTyp.Default,
+      format: FormatTyp.Date,
     },
   ];
 

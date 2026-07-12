@@ -14,8 +14,7 @@ import { Faktura as Faktura1 } from './upstream/lib-public/types/fa1.types';
 import { Faktura as Faktura2 } from './upstream/lib-public/types/fa2.types';
 import { Faktura as Faktura3 } from './upstream/lib-public/types/fa3.types';
 import { Upo } from './upstream/lib-public/types/upo-v4_2.types';
-import { Position } from './upstream/shared/enums/common.enum';
-import { generateStyle } from './upstream/shared/PDF-functions';
+import { generatePageFooter, generateStyle } from './upstream/shared/PDF-functions';
 import { parseXML, XmlInput } from './upstream/shared/XML-parser';
 import { generateInvoice } from './upstream/lib-public/generate-invoice';
 import { generatePDFUPO } from './upstream/lib-public/UPO-generator';
@@ -98,13 +97,7 @@ export async function renderUpoPdfFromXml(xml: XmlInput): Promise<Uint8Array> {
     ...generateStyle(),
     pageSize: 'A4',
     pageOrientation: 'landscape',
-    footer(currentPage: number, pageCount: number) {
-      return {
-        text: `${currentPage} z ${pageCount}`,
-        alignment: Position.RIGHT,
-        margin: [0, 0, 20, 0],
-      };
-    },
+    footer: generatePageFooter,
   };
 
   return toUint8Array(pdfMake.createPdf(docDefinition));

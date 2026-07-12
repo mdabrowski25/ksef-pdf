@@ -3,11 +3,10 @@ import pdfMake from 'pdfmake/build/pdfmake.js';
 import pdfFonts from 'pdfmake/build/vfs_fonts.js';
 import { Upo } from './types/upo-v4_2.types';
 import { TDocumentDefinitions } from 'pdfmake/interfaces';
-import { generateStyle } from '../shared/PDF-functions';
+import { generatePageFooter, generateStyle } from '../shared/PDF-functions';
 import { generateNaglowekUPO } from './generators/UPO4_2/Naglowek';
 import { generateDokumnetUPO } from './generators/UPO4_2/Dokumenty';
 import { parseXML, XmlInput } from '../shared/XML-parser';
-import { Position } from '../shared/enums/common.enum';
 
 pdfMake.vfs = pdfFonts.vfs;
 
@@ -23,13 +22,7 @@ export async function generatePDFUPO(
     ...generateStyle(),
     pageSize: 'A4',
     pageOrientation: 'landscape',
-    footer: function (currentPage: number, pageCount: number) {
-      return {
-        text: currentPage.toString() + ' z ' + pageCount,
-        alignment: Position.RIGHT,
-        margin: [0, 0, 20, 0],
-      };
-    },
+    footer: generatePageFooter,
   };
 
   return new Promise((resolve, reject): void => {

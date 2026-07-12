@@ -73,6 +73,13 @@ export function formatDateTime(data?: string, withoutSeconds?: boolean, withoutT
   if (!data) {
     return '';
   }
+
+  const dateOnlyMatch: RegExpMatchArray | null = data.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (dateOnlyMatch) {
+    const [, year, month, day] = dateOnlyMatch;
+    return `${day}.${month}.${year}`;
+  }
+
   const dateTime: Date = new Date(data);
 
   if (isNaN(dateTime.getTime())) {

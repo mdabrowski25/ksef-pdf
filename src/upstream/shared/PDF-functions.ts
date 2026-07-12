@@ -359,6 +359,14 @@ export function generateStyle(): Partial<TDocumentDefinitions> {
   };
 }
 
+export function generatePageFooter(currentPage: number, pageCount: number): ContentText {
+  return {
+    text: `${currentPage} z ${pageCount}`,
+    alignment: Position.RIGHT,
+    margin: [0, 0, 20, 0],
+  };
+}
+
 export function getTable<T>(data: T | T[]): NonNullable<T>[] {
   if (!data) {
     return [];

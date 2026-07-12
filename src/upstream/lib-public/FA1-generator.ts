@@ -2,7 +2,7 @@
 import pdfMake, { TCreatedPdf } from 'pdfmake/build/pdfmake.js';
 import pdfFonts from 'pdfmake/build/vfs_fonts.js';
 import { Content, TDocumentDefinitions } from 'pdfmake/interfaces';
-import { generateStyle, getValue, hasValue } from '../shared/PDF-functions';
+import { generatePageFooter, generateStyle, getValue, hasValue } from '../shared/PDF-functions';
 import { TRodzajFaktury } from '../shared/consts/const';
 import { generateAdnotacje } from './generators/FA1/Adnotacje';
 import { generateDodatkoweInformacje } from './generators/FA1/DodatkoweInformacje';
@@ -52,6 +52,7 @@ export function generateFA1(invoice: Faktura, additionalData: AdditionalDataType
       ...generateStopka(additionalData, invoice.Stopka, invoice.Naglowek, invoice.Fa?.WZ),
     ],
     ...generateStyle(),
+    footer: generatePageFooter,
   };
 
   return pdfMake.createPdf(docDefinition);
