@@ -37,6 +37,8 @@ update this file and `CHANGELOG.md` before release.
 - Explicit `.js` pdfmake subpath imports required by Node ESM resolution.
 - pdfmake 0.3 Promise adapters and deny-by-default local/URL resource policies.
 - Server-only i18next initialization with debug and support-console output disabled.
+- Deterministic Europe/Warsaw timestamp formatting across host time zones while
+  preserving timezone-free XML values as local wall times.
 - PDF footer identity uses `@mdab25/ksef-pdf` and the package version.
 - The high-level API normalizes spaced/unspaced schema identifiers and formats
   the KSeF acquisition date as `DD.MM.YYYY`.

@@ -16,25 +16,7 @@ export function formatDateTime(data?: string, withoutSeconds?: boolean, withoutT
   if (!data) {
     return '';
   }
-  const dateTime: Date = new Date(data);
-
-  if (isNaN(dateTime.getTime())) {
-    return data;
-  }
-
-  const year: number = dateTime.getFullYear();
-  const month: string = (dateTime.getMonth() + 1).toString().padStart(2, '0');
-  const day: string = dateTime.getDate().toString().padStart(2, '0');
-  const hours: string = dateTime.getHours().toString().padStart(2, '0');
-  const minutes: string = dateTime.getMinutes().toString().padStart(2, '0');
-  const seconds: string = dateTime.getSeconds().toString().padStart(2, '0');
-
-  if (withoutTime) {
-    return `${day}.${month}.${year}`;
-  } else if (withoutSeconds) {
-    return `${day}.${month}.${year} ${hours}:${minutes}`;
-  }
-  return `${day}.${month}.${year} ${hours}:${minutes}:${seconds}`;
+  return formatDateTimePl(data, !withoutTime, !withoutSeconds);
 }
 
 export function formatDateTimePl(value: string, withTime?: boolean, withSeconds?: boolean): string {
@@ -48,6 +30,21 @@ export function formatDateTimePl(value: string, withTime?: boolean, withSeconds?
   if (!value) {
     return '';
   }
+
+  const naiveDateTime = value.match(
+    /^(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}):(\d{2})(?::(\d{2})(?:\.\d+)?)?)?$/,
+  );
+  if (naiveDateTime) {
+    const [, year, month, day, hours = '00', minutes = '00', seconds = '00'] = naiveDateTime;
+    const date = `${day}.${month}.${year}`;
+
+    if (!withTime) {
+      return date;
+    }
+
+    return `${date} ${hours}:${minutes}${withSeconds ? `:${seconds}` : ''}`;
+  }
+
   const date = new Date(value);
 
   if (isNaN(date.getTime())) {
