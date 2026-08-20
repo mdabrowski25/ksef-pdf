@@ -6,6 +6,12 @@ All notable changes to this package are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-08-20
+
+### Fixed
+
+- Restored the Polish support and services contact section in the package README.
+
 ## [1.0.0] - 2026-08-20
 
 ### Added
@@ -73,7 +79,8 @@ See [Migrating to 1.0.0](docs/migration-to-1.0.md) for breaking changes.
 - Initial Node.js package for FA(1), FA(2), FA(3), UPO(4.2), and UPO(4.3) PDF rendering.
 - ESM/CJS builds and Node-friendly XML input adapters.
 
-[Unreleased]: https://github.com/mdabrowski25/ksef-pdf/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/mdabrowski25/ksef-pdf/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/mdabrowski25/ksef-pdf/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/mdabrowski25/ksef-pdf/compare/b804404...v1.0.0
 [0.2.3]: https://github.com/mdabrowski25/ksef-pdf/compare/b39afb2...b804404
 [0.2.1]: https://github.com/mdabrowski25/ksef-pdf/compare/52c65df...b39afb2

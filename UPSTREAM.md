@@ -13,7 +13,7 @@ update this file and `CHANGELOG.md` before release.
 | Upstream release | `1.1.31` |
 | Upstream commit | `2b7c1daea6fc3438a4cf28195f2deac75dda4220` |
 | Imported | 2026-08-20 |
-| Local package release | `1.0.0` |
+| Local package release | `1.0.1` |
 
 ## Imported capabilities
 
@@ -49,6 +49,13 @@ The public CIRFMF repository currently ends at 1.1.31. A PDF downloaded from the
 KSeF TEST portal on 2026-08-19 reported renderer 1.1.36. This package does not
 claim that unreleased version. Portal-only behavior must be verified separately
 or imported when CIRFMF publishes it.
+
+## Local release history
+
+### 1.0.1 - 2026-08-20
+
+- No upstream runtime changes.
+- Restored the package support and services contact information in `README.md`.
 
 ## Synchronization procedure
 

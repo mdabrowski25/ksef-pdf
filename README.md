@@ -93,7 +93,7 @@ the low-level pdfmake object to Promise-based methods.
 - [Changelog](CHANGELOG.md)
 - [Migrating to 1.0.0](docs/migration-to-1.0.md)
 - [CIRFMF upstream tracking](UPSTREAM.md)
-- [1.0.0 release notes](docs/releases/v1.0.0.md)
+- [1.0.1 release notes](docs/releases/v1.0.1.md)
 
 ## Development
 
