@@ -3,6 +3,16 @@
 Node.js 22+ PDF renderer for Polish KSeF XML documents. The package adapts the
 public CIRFMF visualization logic for server-side ESM and CommonJS use.
 
+## Wsparcie / Usługi
+
+Potrzebujesz wsparcia przy integracji z KSeF, generowaniu PDF z faktur XML lub
+budowie własnych narzędzi wokół KSeF?
+
+Skontaktuj się ze mną – chętnie pomogę w implementacji, integracji lub
+rozwiązaniu konkretnych problemów technicznych.
+
+LinkedIn: [https://www.linkedin.com/in/mateusz-dabrowski25](https://www.linkedin.com/in/mateusz-dabrowski25)
+
 ## Supported documents
 
 | Document | Supported |
