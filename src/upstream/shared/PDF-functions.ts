@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Column,
   Content,
@@ -13,17 +12,20 @@ import {
 } from 'pdfmake/interfaces';
 import {
   DEFAULT_TABLE_LAYOUT,
+  FormaPlatnosci,
   Kraj,
   TStawkaPodatku_FA1,
   TStawkaPodatku_FA2,
   TStawkaPodatku_FA3,
-} from './consts/const';
-import { formatDateTime, formatTime, getFormaPlatnosciString } from './generators/common/functions';
+} from './consts/FA.const';
+import { formatDateTimePl, formatTime, translateMap } from './generators/common/functions';
 import { HeaderDefine, PdfFP, PdfOptionField } from './types/pdf-types';
 import { FP } from '../lib-public/types/fa3.types';
 import { DifferentValues, FilteredKeysOfValues, TypesOfValues } from './types/universal.types';
 import { CreateLabelTextData } from './types/additional-data.types';
 import FormatTyp, { Answer, Position } from './enums/common.enum';
+import { TStawkaPodatku_FARR } from './consts/FARR.const';
+import { getDefaultFontName } from './../lib-public/configure-fonts';
 
 export function formatText(
   value: number | string | undefined | null,
@@ -55,12 +57,18 @@ export function formatText(
 export function generateTable<T>(array: T[], keys: Partial<Record<keyof T, string>>): Content {
   const faRows: NonNullable<T>[] = getTable(array);
 
-  const headers: { name: string; title: string; format: FormatTyp }[] = Object.entries(keys).map(
-    ([key, value]: [string, unknown]): { name: string; title: string; format: FormatTyp } => {
+  const headers: { name: string; title: string; format: FormatTyp; width?: string }[] = Object.entries(
+    keys
+  ).map(
+    (
+      [key, value]: [string, unknown],
+      index
+    ): { name: string; title: string; format: FormatTyp; width?: string } => {
       return {
         name: key,
         title: value as string,
         format: FormatTyp.Default,
+        ...(index === 0 ? { width: 'auto' } : {}),
       };
     }
   );
@@ -68,7 +76,9 @@ export function generateTable<T>(array: T[], keys: Partial<Record<keyof T, strin
   const table: { content: ContentTable | null; fieldsWithValue: string[] } = getContentTable(
     headers,
     faRows,
-    '*'
+    '*',
+    undefined,
+    15
   );
 
   return table.content ?? [];
@@ -99,6 +109,12 @@ function formatValue(
         : `${dotToComma(Number(value).toFixed(2))} ${currency}`;
       result.fontSize = 10;
       break;
+    case FormatTyp.CurrencyGreaterWithSeparator:
+      result.text = isNaN(Number(value))
+        ? (value as string)
+        : `${normalizeCurrencySeparator(value)} ${currency}`;
+      result.fontSize = 10;
+      break;
     case FormatTyp.Currency6:
       result.text = isNaN(Number(value))
         ? (value as string)
@@ -106,26 +122,29 @@ function formatValue(
       result.alignment = Position.RIGHT;
       break;
     case FormatTyp.DateTime:
-      result.text = formatDateTime(value as string);
+      result.text = formatDateTimePl(value as string, true, true);
       break;
     case FormatTyp.Date:
-      result.text = formatDateTime(value as string, false, true);
+      result.text = formatDateTimePl(value as string);
       break;
     case FormatTyp.Time:
       result.text = formatTime(value as string);
       break;
     case FormatTyp.FormOfPayment:
-      result.text = getFormaPlatnosciString({ _text: value as string });
+      result.text = translateMap({ _text: value as string }, FormaPlatnosci);
       break;
     case FormatTyp.Boolean:
-      result.text = (value as string) === '1' ? Answer.TRUE : Answer.FALSE;
+      result.text = (value as string)?.trim() === '1' ? Answer.TRUE : Answer.FALSE;
       break;
     case FormatTyp.Percentage:
-      result.text = `${value}%`;
+      result.text = value ? `${dotToComma(value.toString())}%` : ' ';
       break;
     case FormatTyp.Number:
       result.text = replaceDotWithCommaIfNeeded(value);
       result.alignment = Position.RIGHT;
+      break;
+    case FormatTyp.AccountNumber:
+      result.text = formatBankAccountNumber(value as string);
       break;
   }
 }
@@ -137,12 +156,14 @@ export function normalizeCurrencySeparator(value: string | number | undefined): 
 
   const numberWithComma = dotToComma(typeof value === 'string' ? value : value.toString());
 
-  if (numberWithComma.includes(',')) {
+  if (numberWithComma === '0') {
+    return numberWithComma;
+  } else if (numberWithComma.includes(',')) {
     const parts = numberWithComma.split(',');
 
-    return parts[1].length > 1 ? numberWithComma : numberWithComma + '0';
+    return addThousandSeparator(parts[1].length > 1 ? numberWithComma : numberWithComma + '0');
   } else {
-    return numberWithComma + ',00';
+    return addThousandSeparator(numberWithComma + ',00');
   }
 }
 
@@ -164,9 +185,10 @@ function dotToComma(value: string): string {
   return value.replace('.', ',');
 }
 
-export function hasValue(value: FP | string | number | undefined): boolean {
+export function hasValue(value: FP | string | number | undefined, zeroValidator: boolean = true): boolean {
   return (
-    !!((typeof value !== 'object' && value) || (typeof value === 'object' && value._text)) || value === 0
+    !!((typeof value !== 'object' && value) || (typeof value === 'object' && value._text)) ||
+    (zeroValidator && value === 0)
   );
 }
 
@@ -204,6 +226,22 @@ export function createLabelTextArray(data: CreateLabelTextData[]): Content[] {
       ),
     },
   ];
+}
+
+export function addThousandSeparator(
+  value: string,
+  thousandSeparator = '\xa0',
+  decimalSeparator = ','
+): string {
+  const splitRegex = /\B(?=(\d{3})+(?!\d))/g;
+
+  if (value.includes(decimalSeparator)) {
+    const splitValue = value.split(decimalSeparator);
+
+    return `${splitValue[0].replace(splitRegex, thousandSeparator)}${decimalSeparator}${splitValue[1]}`;
+  } else {
+    return value.replace(splitRegex, thousandSeparator);
+  }
 }
 
 export function createLabelText(
@@ -254,6 +292,14 @@ export function createHeader(text: string, margin?: Margins): Content[] {
   ];
 }
 
+export function createPefHeader(text: string): Content[] {
+  return [{ stack: [formatText(text, FormatTyp.PEFHeaderContent)], marginBottom: 4 }];
+}
+
+export function createPEFSubHeader(text: string): Content[] {
+  return [{ stack: [formatText(text, FormatTyp.PEFSubHeaderContent)], marginBottom: 6 }];
+}
+
 export function createSubHeader(text: string, margin?: Margins): Content[] {
   return [
     {
@@ -263,7 +309,65 @@ export function createSubHeader(text: string, margin?: Margins): Content[] {
   ];
 }
 
+export function createInlineLabelValue(
+  value: string,
+  label: string | undefined = undefined,
+  margin?: Margins
+): ContentText {
+  if (label) {
+    return {
+      text: [
+        formatText(label, FormatTyp.PEFInlineLabel),
+        formatText(value ? ' ' + value : ' -', FormatTyp.PEFValue),
+      ],
+      margin: margin ?? [0, 0, 0, 1],
+    };
+  }
+
+  return { text: formatText(value, FormatTyp.PEFValue), margin: margin ?? [0, 0, 0, 1] };
+}
+
+export function createInlineValueLabel(
+  value: string,
+  label: string | undefined = undefined,
+  margin?: Margins
+): ContentText {
+  if (label) {
+    return {
+      text: [
+        formatText(value ? ' ' + value : ' -', FormatTyp.PEFValue),
+        formatText(label, FormatTyp.PEFInlineLabel),
+      ],
+      margin: margin ?? [0, 0, 0, 1],
+    };
+  }
+
+  return { text: formatText(value, FormatTyp.PEFValue), margin: margin ?? [0, 0, 0, 1] };
+}
+
+export function createSmallInlineLabelValue(
+  value: string,
+  label: string | undefined = undefined,
+  formatTyp: FormatTyp | FormatTyp[] = FormatTyp.PEFInlineLabel,
+  margin?: Margins
+): ContentText {
+  if (label) {
+    return {
+      text: [formatText(label, FormatTyp.PEFInlineLabel), formatText(value ? ' ' + value : '-', formatTyp)],
+      margin: margin ?? [0, 0, 0, 1],
+    };
+  }
+
+  return { text: formatText(value, FormatTyp.PEFInlineLabel), margin: margin ?? [0, 0, 0, 1] };
+}
+
+export function createPEFSectionTitle(value: string): ContentText {
+  return { text: formatText(value, FormatTyp.PEFTitle), marginBottom: 3 };
+}
+
 export function generateStyle(): Partial<TDocumentDefinitions> {
+  const fontName = getDefaultFontName();
+
   return {
     styles: {
       columnMarginLeft: {
@@ -294,6 +398,9 @@ export function generateStyle(): Partial<TDocumentDefinitions> {
         bold: true,
         fontSize: 9,
       },
+      PEFInlineLabel: {
+        color: '#575757',
+      },
       LabelGreater: {
         color: '#343A40',
         bold: true,
@@ -302,6 +409,7 @@ export function generateStyle(): Partial<TDocumentDefinitions> {
       Value: {
         color: '#343A40',
       },
+      PEFValue: { fontSize: 8, color: '#242424' },
       ValueMedium: {
         color: '#343A40',
         fontSize: 9,
@@ -329,10 +437,27 @@ export function generateStyle(): Partial<TDocumentDefinitions> {
       HeaderContent: {
         fontSize: 10,
         bold: true,
+        color: '#343A40',
+      },
+      PEFHeaderContent: {
+        fontSize: 12,
+        bold: true,
+        color: '#242424',
+        alignment: Position.CENTER,
+      },
+      PEFSubHeaderContent: {
+        fontSize: 9,
+        color: '#242424',
+        bold: true,
       },
       SubHeaderContent: {
         fontSize: 7,
         bold: true,
+        color: '#343A40',
+      },
+      PEFTitle: {
+        fontSize: 9,
+        color: '#242424',
       },
       TitleContent: {
         fontSize: 10,
@@ -352,18 +477,10 @@ export function generateStyle(): Partial<TDocumentDefinitions> {
       },
     },
     defaultStyle: {
-      font: 'Roboto',
+      font: fontName ?? 'Roboto',
       fontSize: 7,
       lineHeight: 1.2,
     },
-  };
-}
-
-export function generatePageFooter(currentPage: number, pageCount: number): ContentText {
-  return {
-    text: `${currentPage} z ${pageCount}`,
-    alignment: Position.RIGHT,
-    margin: [0, 0, 20, 0],
   };
 }
 
@@ -456,7 +573,7 @@ export function getContentTable<T>(
 
       return formatText(
         makeBreakable(
-          header.mappingData && value ? header.mappingData[value] : (value ?? ''),
+          header.mappingData && value ? translateMap(value, header.mappingData) : (value ?? ''),
           wordBreak ?? 40
         ),
         header.format ?? FormatTyp.Default,
@@ -480,7 +597,12 @@ export function getContentTable<T>(
   };
 }
 
-export function generateTwoColumns(kol1: Column, kol2: Column, margin?: Margins): Content {
+export function generateTwoColumns(
+  kol1: Column,
+  kol2: Column,
+  margin?: Margins,
+  unbreakable = true
+): Content {
   return {
     columns: [
       { stack: [kol1], width: '50%' },
@@ -488,6 +610,7 @@ export function generateTwoColumns(kol1: Column, kol2: Column, margin?: Margins)
     ],
     margin: margin ?? [0, 0, 0, 0],
     columnGap: 20,
+    unbreakable,
   };
 }
 
@@ -525,7 +648,7 @@ export function getKraj(code: string): string {
   return code;
 }
 
-export function getTStawkaPodatku(code: string, version: 1 | 2 | 3, P_PMarzy?: string): string {
+export function getTStawkaPodatku(code: string, version: 1 | 2 | 3 | 'RR', P_PMarzy?: string): string {
   let TStawkaPodatkuVersioned: Record<string, string> = {};
 
   switch (version) {
@@ -538,13 +661,16 @@ export function getTStawkaPodatku(code: string, version: 1 | 2 | 3, P_PMarzy?: s
     case 3:
       TStawkaPodatkuVersioned = TStawkaPodatku_FA3;
       break;
+    case 'RR':
+      TStawkaPodatkuVersioned = TStawkaPodatku_FARR;
+      break;
   }
   if (!code && P_PMarzy === '1') {
     return 'marża';
   }
 
   if (TStawkaPodatkuVersioned[code]) {
-    return TStawkaPodatkuVersioned[code];
+    return translateMap(code, TStawkaPodatkuVersioned);
   }
   return code;
 }
@@ -577,4 +703,229 @@ export function makeBreakable(
   return value;
 }
 
+function splitStringAfter(input: string, after: number): string[] {
+  return input.split('').reduce((acc: string[], char, index) => {
+    if (index % after === 0) {
+      acc.push('');
+    }
+    acc[acc.length - 1] += char;
+    return acc;
+  }, []);
+}
 
+export function formatBankAccountNumber(number: string): string {
+  if (number.length <= 12) return number;
+
+  if (/\s/.test(number.trim())) return number.trim();
+
+  const startsWithLetterOrSymbolRegex = /^[a-z!-\/:-@[-`{-~]/i;
+
+  if (number.charAt(0).match(startsWithLetterOrSymbolRegex)) {
+    number = splitStringAfter(number.replace(/ /g, ''), 4).join(' ');
+  } else {
+    const firstTwoCharacters = number.substring(0, 2);
+    number = `${firstTwoCharacters} ${splitStringAfter(number.substring(2).replace(/ /g, ''), 4).join(' ')}`;
+  }
+
+  return number;
+}
+
+export function createLabelWithBoldText(
+  label: string,
+  value: string | number,
+  formatTyp: FormatTyp | FormatTyp[] = FormatTyp.Label
+): Content[] {
+  if (value) {
+    return [
+      {
+        text: [formatText(label, FormatTyp.Value)],
+      },
+      {
+        text: [formatText(value, formatTyp)],
+      },
+    ];
+  }
+  return [];
+}
+
+export function borderedBox(contents: Content[]): Content {
+  return {
+    margin: [0, 0, 0, 6],
+
+    table: {
+      widths: ['*'],
+      body: [
+        [
+          {
+            stack: contents,
+            fillColor: '#FFFFFF',
+          },
+        ],
+      ],
+    },
+
+    layout: {
+      hLineWidth: () => 0.5,
+      vLineWidth: () => 0.5,
+
+      hLineColor: () => '#E3E3E3',
+      vLineColor: () => '#E3E3E3',
+
+      paddingLeft: () => 10,
+      paddingRight: () => 10,
+      paddingTop: () => 10,
+      paddingBottom: () => 10,
+    },
+  };
+}
+
+export function generateTaxRateLabel(ID?: string, percent?: string): string {
+  if (!ID && !percent) {
+    return '';
+  }
+  const description = getTaxCategoryDescription(ID);
+
+  let result = `VAT: ${ID}`;
+
+  if (description) {
+    result += ` (${description})`;
+  }
+
+  if (percent) {
+    result += `, ${percent}%`;
+  }
+  return result;
+}
+
+export function formatPefTableValue(value: unknown): string {
+  const text = String(value ?? '');
+  const match = text.match(/^(\d+(?:\.\d+)?)(\s+[A-Z]{3})?$/);
+  if (!match) {
+    return text;
+  }
+  const numberPart = match[1];
+  const suffix = match[2] ?? '';
+  const [integerPart, decimalPart] = numberPart.split('.');
+  const formattedInteger = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  return `${formattedInteger},${(decimalPart ?? '00').padEnd(2, '0')}${suffix}`;
+}
+
+export function generatePefTable<T extends Record<string, unknown>>(
+  rows: T[],
+  headers: Record<keyof T, string>
+): Content {
+  const keys = Object.keys(headers) as (keyof T)[];
+  const body: TableCell[][] = [
+    keys.map(
+      (key): TableCell => ({
+        text: String(headers[key]),
+        bold: true,
+        fillColor: '#E6E6E6',
+      })
+    ),
+    ...rows.map((row): TableCell[] =>
+      keys.map((key): TableCell => {
+        const value = row[key];
+        let textValue;
+        if (typeof value === 'object' && value !== null) {
+          textValue = (value as any).text;
+        } else if (key === 'reasonCode') {
+          textValue = String(value ?? '');
+        } else {
+          textValue = formatPefTableValue(value);
+        }
+
+        return {
+          text: textValue,
+          style: 'formatValue',
+          alignment: ['amount', 'baseAmount', 'taxAmount', 'taxableAmount'].includes(String(key))
+            ? 'right'
+            : 'left',
+        };
+      })
+    ),
+  ];
+  return {
+    table: {
+      widths: Object.keys(headers).map(() => '*'),
+      body,
+    },
+    layout: {
+      hLineWidth: (i: number) => {
+        if (i === 1) {
+          return 1;
+        }
+        if (i === body.length - 1) {
+          return 1;
+        }
+        return 0;
+      },
+
+      vLineWidth: () => 0,
+      paddingLeft: () => 5,
+      paddingRight: () => 5,
+      paddingTop: () => 5,
+      paddingBottom: () => 5,
+    },
+    unbreakable: true,
+  } as ContentTable;
+}
+
+export function createPefTableHeader(text: string, additionalContent?: Content): Content {
+  return {
+    table: {
+      widths: ['*'],
+      body: [
+        [
+          {
+            stack: [
+              {
+                text,
+                style: 'PEFHeaderContent',
+                alignment: 'left',
+              },
+              additionalContent ?? null,
+            ],
+            fillColor: '#FAFAFA',
+            margin: [0, 0, 0, 0],
+          },
+        ],
+      ],
+    },
+    layout: {
+      hLineWidth: () => 0,
+      vLineWidth: () => 0,
+      paddingLeft: () => 5,
+      paddingRight: () => 5,
+      paddingTop: () => 5,
+      paddingBottom: () => 5,
+    },
+  } as Content;
+}
+
+export function getTaxCategoryDescription(ID?: string): string {
+  switch (ID) {
+    case 'AE':
+      return 'Odwrotne obciążenie';
+    case 'E':
+      return 'Zwolniony';
+    case 'S':
+      return 'Standard';
+    case 'G':
+      return 'Export';
+    case 'O':
+      return 'Nie podlega VAT';
+    case 'K':
+      return 'Dostawa wewnątrz UE';
+    case 'Z':
+      return 'Zero';
+    case 'L':
+      return 'Canary Islands general indirect tax';
+    case 'M':
+      return 'Tax for production, services and importation in Ceuta and Melilla';
+    case 'B':
+      return 'Transferred (VAT), In Italy';
+    default:
+      return '';
+  }
+}

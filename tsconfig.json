@@ -3,6 +3,10 @@
     "target": "ES2022",
     "module": "ESNext",
     "moduleResolution": "Bundler",
+    "baseUrl": ".",
+    "paths": {
+      "@shared/*": ["src/upstream/shared/*"]
+    },
     "lib": ["ES2022", "DOM"],
     "strict": false,
     "declaration": true,
@@ -14,5 +18,6 @@
     "forceConsistentCasingInFileNames": true,
     "types": ["node", "vitest/globals"]
   },
-  "include": ["src", "test", "vitest.config.ts", "tsup.config.ts"]
+  "include": ["src", "test", "scripts", "vitest.config.ts", "tsup.config.ts"],
+  "exclude": ["src/upstream/**/*.spec.ts"]
 }

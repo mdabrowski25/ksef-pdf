@@ -1,4 +1,3 @@
-// @ts-nocheck
 import FormatTyp from '../enums/common.enum';
 
 export interface PdfTableData {
@@ -57,5 +56,3 @@ export interface PdfFP {
 }
 
 export type PdfFields = PdfOptionFields | string;
-
-

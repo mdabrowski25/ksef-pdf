@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { FP as FP3 } from './fa3.types';
 import { FP as FP2 } from './fa2.types';
 
@@ -25,8 +24,8 @@ export type FA2FakturaZaliczkowaData = FA2FakturaZaliczkowaDataSpozaKSeF | FA2Fa
 
 export interface AdditionalDataTypes {
   nrKSeF: string;
+  acDate?: string;
   qrCode?: string;
+  qr2Code?: string;
   isMobile?: boolean;
 }
-
-

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Content } from 'pdfmake/interfaces';
 import { createSection, generateColumns, getTable, getValue } from '../../../shared/PDF-functions';
 import { Faktura, Podmiot2K, Podmiot3 } from '../../types/fa3.types';
@@ -101,5 +100,3 @@ function getPodmiot3Podmiot2KDto(podmioty2K: Podmiot2K[], podmioty3: Podmiot3[])
   }
   return result;
 }
-
-

@@ -1,23 +1,22 @@
 # @mdab25/ksef-pdf
 
-Node.js package for generating PDF visualizations from KSeF XML documents.
+Node.js 22+ PDF renderer for Polish KSeF XML documents. The package adapts the
+public CIRFMF visualization logic for server-side ESM and CommonJS use.
 
-- Invoices: `FA(1)`, `FA(2)`, `FA(3)`
-- UPO: `UPO(4.2)`, `UPO(4.3)`
-- Runtime: Node.js `>=20`
+## Supported documents
 
-This package vendors and adapts renderer logic from `CIRFMF/ksef-pdf-generator` for server-side use.
+| Document | Supported |
+|---|---|
+| FA(1) | Yes |
+| FA(2) | Yes |
+| FA(3) | Yes |
+| FA_RR(1) | Yes |
+| UPO(4.2) | Yes |
+| UPO(4.3) | Yes |
 
-## Wsparcie / Usługi
-
-Potrzebujesz wsparcia przy integracji z KSeF, generowaniu PDF z faktur XML  
-lub budowie własnych narzędzi wokół KSeF?
-
-Skontaktuj się ze mną – chętnie pomogę w implementacji, integracji lub  
-rozwiązaniu konkretnych problemów technicznych.
-
-LinkedIn: https://www.linkedin.com/in/mateusz-dabrowski25
-
+All invoice kinds represented by those schemas are rendered, including VAT,
+advance, settlement, simplified, corrective, collective-corrective,
+foreign-currency, multi-rate, and attachment-bearing invoices.
 
 ## Install
 
@@ -25,134 +24,81 @@ LinkedIn: https://www.linkedin.com/in/mateusz-dabrowski25
 npm install @mdab25/ksef-pdf
 ```
 
-## Quick Start
+Node.js 22 or newer is required.
+
+## Render an invoice
 
 ```ts
 import { readFile, writeFile } from 'node:fs/promises';
 import { renderPdfFromXml } from '@mdab25/ksef-pdf';
 
 const xml = await readFile('./invoice.xml', 'utf8');
-const pdf = await renderPdfFromXml(xml);
+const pdf = await renderPdfFromXml(xml, {
+  nrKSeF: '1234567890-20260820-ABCDEF123456-01',
+  ksefAcquisitionDate: '2026-08-20T10:30:00Z',
+  qrCode: 'https://qr.ksef.mf.gov.pl/invoice/example',
+});
 
 await writeFile('./invoice.pdf', pdf);
 ```
 
-## API
+`renderPdfFromXml` and `renderPdfBase64FromXml` accept `string`, `Uint8Array`,
+`ArrayBuffer`, `Blob`, or `File` input. `ksefAcquisitionDate` accepts an ISO date,
+ISO timestamp, or `Date` and is rendered as `DD.MM.YYYY`.
 
-### Types
-
-```ts
-type KsefInvoiceVersion = 'FA(1)' | 'FA(2)' | 'FA(3)';
-type KsefUpoVersion = 'UPO(4.2)' | 'UPO(4.3)';
-```
-
-### Functions
-
-```ts
-function detectInvoiceVersion(xml: string): KsefInvoiceVersion | null;
-function detectUpoVersion(xml: string): KsefUpoVersion | null;
-
-function renderPdfFromXml(
-  xml: string | Uint8Array | ArrayBuffer | Blob,
-  options?: { nrKSeF?: string; qrCode?: string },
-): Promise<Uint8Array>;
-
-function renderPdfBase64FromXml(
-  xml: string | Uint8Array | ArrayBuffer | Blob,
-  options?: { nrKSeF?: string; qrCode?: string },
-): Promise<string>;
-
-function renderUpoPdfFromXml(
-  xml: string | Uint8Array | ArrayBuffer | Blob
-): Promise<Uint8Array>;
-```
-
-#### `options`
-
-| Field    | Type     | Description |
-|----------|----------|-------------|
-| `nrKSeF` | `string` | KSeF invoice number displayed on the PDF. When omitted the label defaults to `OFFLINE`. |
-| `qrCode` | `string` | KSeF QR verification URL. When provided, a QR code is rendered on the PDF visualization. |
-
-Compatibility exports (upstream-like):
-- `generateInvoice`
-- `generatePDFUPO`
-- `generateFA1`
-- `generateFA2`
-- `generateFA3`
-
-## QR Code Support
-
-Since `v0.2.0` you can embed a KSeF QR verification code on the PDF:
+## Offline QR2
 
 ```ts
 const pdf = await renderPdfFromXml(xml, {
-  nrKSeF: '1234567890-20260101-ABC123-DE',
-  qrCode: 'https://qr.ksef.mf.gov.pl/invoice/1111111111/01-02-2026/UtQp9Gpc51y-u3xApZjIjgkpZ01js-J8KflSPW8WzIE',
+  qrCode: verificationUrl,
+  qr2Code: certificateUrl,
 });
 ```
 
-The QR verification URL format follows the official KSeF specification:
-```
-https://qr.ksef.mf.gov.pl/invoice/{NIP}/{DD-MM-YYYY}/{Base64URL-SHA256}
-```
+No TEST/DEMO watermark is exposed or rendered by this package.
 
-See [KSeF QR code docs](https://github.com/KSeF-CIRFMF/ksef-docs/blob/main/kody-qr.md) for details.
-
-## Notes
-
-- This package renders PDFs from XML schema content only.
-
-## Minimal HTTP Service Example (n8n-friendly)
+## Custom virtual fonts
 
 ```ts
-import express from 'express';
-import { renderPdfFromXml } from '@mdab25/ksef-pdf';
+import { configureFonts } from '@mdab25/ksef-pdf';
 
-const app = express();
-app.use(express.text({ type: ['application/xml', 'text/xml'], limit: '10mb' }));
-
-app.get('/health', (_req, res) => res.send('OK'));
-
-app.post('/render', async (req, res) => {
-  const pdf = await renderPdfFromXml(req.body, {
-    nrKSeF: req.headers['x-ksef-number'] as string,
-    qrCode: req.headers['x-qr-code'] as string,
-  });
-  res.setHeader('Content-Type', 'application/pdf');
-  res.send(Buffer.from(pdf));
+configureFonts({
+  vfs: { 'Custom-Regular.ttf': base64Font },
+  fonts: {
+    Custom: { normal: 'Custom-Regular.ttf' },
+  },
 });
-
-app.listen(3100);
 ```
+
+Only in-memory VFS fonts are supported. Local-path and remote resource loading
+is denied by default.
+
+## Compatibility APIs
+
+The package continues to export `generateInvoice`, `generatePDFUPO`,
+`generateFA1`, `generateFA2`, `generateFA3`, version-detection helpers, and the
+three high-level `render*` functions. Version 1.0 adds `generateFARR` and changes
+the low-level pdfmake object to Promise-based methods.
+
+- [Changelog](CHANGELOG.md)
+- [Migrating to 1.0.0](docs/migration-to-1.0.md)
+- [CIRFMF upstream tracking](UPSTREAM.md)
+- [1.0.0 release notes](docs/releases/v1.0.0.md)
 
 ## Development
 
 ```bash
-npm install
+npm ci
 npm run typecheck
 npm test
 npm run build
-```
-
-## Publish
-
-```bash
-npm login
-npm publish --access public
-```
-
-Before publishing, verify package contents:
-
-```bash
+npm run check:exports
+npm run check:docs
+npm run check:release
 npm pack --dry-run
 ```
 
 ## License
 
-This package is licensed under `MIT` (see `LICENSE`).
-
-It also includes adapted third-party source code. See:
-- `THIRD_PARTY_NOTICES.md`
-- `LICENSES/CIRFMF-ksef-pdf-generator-ISC.txt`
-
+The package is MIT licensed. Adapted third-party code and its license notices
+are documented in `THIRD_PARTY_NOTICES.md` and `LICENSES/`.

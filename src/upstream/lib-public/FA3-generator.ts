@@ -1,9 +1,6 @@
-// @ts-nocheck
 import pdfMake, { TCreatedPdf } from 'pdfmake/build/pdfmake.js';
-import pdfFonts from 'pdfmake/build/vfs_fonts.js';
 import { Content, TDocumentDefinitions } from 'pdfmake/interfaces';
-import { generatePageFooter, generateStyle, getValue, hasValue } from '../shared/PDF-functions';
-import { TRodzajFaktury } from '../shared/consts/const';
+import { generateStyle, getValue, hasValue } from '@shared/PDF-functions';
 import { generateAdnotacje } from './generators/FA3/Adnotacje';
 import { generateDodatkoweInformacje } from './generators/FA3/DodatkoweInformacje';
 import { generatePlatnosc } from './generators/FA3/Platnosc';
@@ -21,13 +18,18 @@ import { generateStopka } from './generators/common/Stopka';
 import { Faktura } from './types/fa3.types';
 import { ZamowienieKorekta } from './enums/invoice.enums';
 import { AdditionalDataTypes } from './types/common.types';
+import pdfFonts from 'pdfmake/build/vfs_fonts.js';
+import { TRodzajFaktury } from '@shared/consts/FA.const';
+import { Position } from '@shared/enums/common.enum';
+import i18n from 'i18next';
 
-pdfMake.vfs = pdfFonts.vfs;
+pdfMake.addVirtualFileSystem(pdfFonts);
 
 export function generateFA3(invoice: Faktura, additionalData: AdditionalDataTypes): TCreatedPdf {
   const isKOR_RABAT: boolean =
     invoice.Fa?.RodzajFaktury?._text == TRodzajFaktury.KOR && hasValue(invoice.Fa?.OkresFaKorygowanej);
   const rabatOrRowsInvoice: Content = isKOR_RABAT ? generateRabat(invoice.Fa!) : generateWiersze(invoice.Fa!);
+
   const docDefinition: TDocumentDefinitions = {
     content: [
       ...generateNaglowek(invoice.Fa, additionalData, invoice.Zalacznik),
@@ -51,11 +53,15 @@ export function generateFA3(invoice: Faktura, additionalData: AdditionalDataType
       generateWarunkiTransakcji(invoice.Fa?.WarunkiTransakcji),
       ...generateStopka(additionalData, invoice.Stopka, invoice.Naglowek, invoice.Fa?.WZ, invoice.Zalacznik),
     ],
+    footer: (currentPage, pageCount) => {
+      return {
+        text: `${currentPage.toString()} ${i18n.t('invoice.footer.pagesTotal')} ${pageCount}`,
+        alignment: Position.RIGHT,
+        margin: [0, 0, 40, 0],
+      };
+    },
     ...generateStyle(),
-    footer: generatePageFooter,
   };
 
   return pdfMake.createPdf(docDefinition);
 }
-
-

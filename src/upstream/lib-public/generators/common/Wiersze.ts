@@ -1,7 +1,7 @@
-// @ts-nocheck
-import { TRodzajFaktury } from '../../../shared/consts/const';
+import { TRodzajFaktury } from '../../../shared/consts/FA.const';
 import { FP } from '../../types/fa1.types';
 import { getValue } from '../../../shared/PDF-functions';
+import i18n from 'i18next';
 
 export function addMarza(
   rodzajFaktury: string | number | undefined,
@@ -20,9 +20,9 @@ export function addMarza(
 
     if (isP_PMarzy) {
       if (isVATType && !getValue(wiersz.P_12) && !getValue(wiersz.P_12_XII)) {
-        return { P_12: { _text: 'marża' } };
+        return { P_12: { _text: i18n.t('invoice.footer.margin') } };
       } else if (isZALType && !getValue(wiersz.P_12Z) && !getValue(wiersz.P_12Z_XII)) {
-        return { P_12Z: { _text: 'marża' } };
+        return { P_12Z: { _text: i18n.t('invoice.footer.margin') } };
       } else {
         return {};
       }
@@ -31,5 +31,3 @@ export function addMarza(
 
   return {};
 }
-
-

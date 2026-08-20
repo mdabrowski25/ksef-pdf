@@ -1,4 +1,3 @@
-// @ts-nocheck
 export interface Faktura {
   _attributes?: FakturaAttributes;
   Naglowek?: Naglowek;
@@ -298,5 +297,3 @@ export interface FakturaAttributes {
   xsi?: string;
   schemaLocation?: string;
 }
-
-

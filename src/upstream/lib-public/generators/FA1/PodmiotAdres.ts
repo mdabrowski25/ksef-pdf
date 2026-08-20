@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Content, Margins } from 'pdfmake/interfaces';
 import { createHeader, createSubHeader } from '../../../shared/PDF-functions';
 import { Adres } from '../../types/fa1.types';
@@ -18,5 +17,3 @@ export function generatePodmiotAdres(
     ...generateAdres(podmiotAdres),
   ];
 }
-
-

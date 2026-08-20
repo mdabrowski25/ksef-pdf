@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { FP as FP1 } from '../../lib-public/types/fa1.types';
 import { FP as FP2 } from '../../lib-public/types/fa2.types';
 import { FP as FP3 } from '../../lib-public/types/fa3.types';
@@ -15,5 +14,3 @@ export interface DifferentValues {
   value: string | number;
   count: number;
 }
-
-

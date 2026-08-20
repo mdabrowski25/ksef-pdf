@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   KodFormularza as KodFormularzaFa1,
   Rozliczenie as RozliczenieFa1,
@@ -383,5 +382,3 @@ export interface FakturaAttributes {
   'xmlns:xsi'?: string;
   'xsi:schemaLocation'?: string;
 }
-
-

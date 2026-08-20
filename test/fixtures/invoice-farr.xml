@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Faktura xmlns="http://crd.gov.pl/wzor/2026/02/01/FA_RR/">
+  <Naglowek>
+    <KodFormularza kodSystemowy="FA_RR (1)" wersjaSchemy="1-0E">FA_RR</KodFormularza>
+    <WariantFormularza>1</WariantFormularza>
+    <DataWytworzeniaFa>2026-08-20T10:00:00Z</DataWytworzeniaFa>
+    <SystemInfo>Test fixture</SystemInfo>
+  </Naglowek>
+  <Podmiot1>
+    <DaneIdentyfikacyjne><NIP>1111111111</NIP><Nazwa>Rolnik Testowy</Nazwa></DaneIdentyfikacyjne>
+    <Adres><KodKraju>PL</KodKraju><AdresL1>Adres testowy 1</AdresL1></Adres>
+  </Podmiot1>
+  <Podmiot2>
+    <DaneIdentyfikacyjne><NIP>2222222222</NIP><Nazwa>Nabywca Testowy</Nazwa></DaneIdentyfikacyjne>
+    <Adres><KodKraju>PL</KodKraju><AdresL1>Adres testowy 2</AdresL1></Adres>
+  </Podmiot2>
+  <FakturaRR>
+    <KodWaluty>PLN</KodWaluty>
+    <P_1M>Warszawa</P_1M>
+    <P_4A>2026-08-20</P_4A>
+    <P_4B>2026-08-20</P_4B>
+    <P_4C>RR/1/2026</P_4C>
+    <P_11_1>1000.00</P_11_1>
+    <P_11_2>70.00</P_11_2>
+    <P_12_1>1070.00</P_12_1>
+    <P_12_2>jeden tysiąc siedemdziesiąt złotych</P_12_2>
+    <RodzajFaktury>VAT_RR</RodzajFaktury>
+    <FakturaRRWiersz>
+      <NrWierszaFa>1</NrWierszaFa>
+      <P_5>Zboże testowe</P_5>
+      <P_6A>kg</P_6A>
+      <P_6B>100</P_6B>
+      <P_7>10.00</P_7>
+      <P_8>1000.00</P_8>
+      <P_9>7</P_9>
+      <P_10>70.00</P_10>
+      <P_11>1070.00</P_11>
+    </FakturaRRWiersz>
+  </FakturaRR>
+</Faktura>

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { FP } from './fa3.types';
 
 export interface Podmiot3DaneIdentyfikacyjne {
@@ -11,5 +10,3 @@ export interface Podmiot3DaneIdentyfikacyjne {
   BrakID?: FP;
   Nazwa?: FP;
 }
-
-

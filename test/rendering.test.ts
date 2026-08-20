@@ -11,10 +11,10 @@ import {
 import { generatePlatnosc as generateFa1Platnosc } from '../src/upstream/lib-public/generators/FA1/Platnosc';
 import { generatePlatnosc as generateFa2Platnosc } from '../src/upstream/lib-public/generators/FA2/Platnosc';
 import { generatePlatnosc as generateFa3Platnosc } from '../src/upstream/lib-public/generators/FA3/Platnosc';
-import { generatePageFooter } from '../src/upstream/shared/PDF-functions';
 
 const invoiceXml = readFileSync(join(process.cwd(), 'test/fixtures/invoice-fa2.xml'), 'utf8');
 const upoXml = readFileSync(join(process.cwd(), 'test/fixtures/upo-v4_3.xml'), 'utf8');
+const upo42Xml = upoXml.replace('/KSeF/v4-3', '/KSeF/v4-2');
 
 function pdfHeader(bytes: Uint8Array): string {
   return Buffer.from(bytes).subarray(0, 4).toString('utf8');
@@ -63,6 +63,13 @@ describe('KSeF PDF renderer', () => {
     expect(pdfHeader(pdfBytes)).toBe('%PDF');
   });
 
+  it('detects and renders UPO(4.2)', async () => {
+    expect(detectUpoVersion(upo42Xml)).toBe('UPO(4.2)');
+
+    const pdfBytes = await renderUpoPdfFromXml(upo42Xml);
+    expect(pdfHeader(pdfBytes)).toBe('%PDF');
+  });
+
   it('formats payment deadlines as DD.MM.YYYY in payment tables', () => {
     const renderedPaymentTexts = [
       generateFa1Platnosc({
@@ -86,13 +93,5 @@ describe('KSeF PDF renderer', () => {
       expect(texts).toContain('30.03.2026');
       expect(texts).not.toContain('2026-03-30');
     }
-  });
-
-  it('formats page footer like the official KSeF visualization', () => {
-    expect(generatePageFooter(1, 2)).toMatchObject({
-      text: '1 z 2',
-      alignment: 'right',
-      margin: [0, 0, 20, 0],
-    });
   });
 });

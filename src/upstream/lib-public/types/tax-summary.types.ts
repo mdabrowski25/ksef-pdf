@@ -1,4 +1,3 @@
-// @ts-nocheck
 export interface TaxSummaryTypes {
   no: number;
   taxRateString: string;
@@ -7,5 +6,3 @@ export interface TaxSummaryTypes {
   gross?: string | number;
   taxPLN?: string | number;
 }
-
-

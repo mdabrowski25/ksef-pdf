@@ -1,8 +1,16 @@
 import { defineConfig } from "vitest/config";
+import { resolve } from "node:path";
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      "@shared": resolve(import.meta.dirname, "src/upstream/shared"),
+    },
+  },
   test: {
-    environment: "node",
-    include: ["test/**/*.test.ts"],
+    globals: true,
+    environment: "jsdom",
+    include: ["test/**/*.test.ts", "src/upstream/**/*.spec.ts"],
+    setupFiles: ["src/upstream/shared/mocks/functions.mock.ts"],
   },
 });

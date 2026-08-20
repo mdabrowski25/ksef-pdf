@@ -1,4 +1,3 @@
-// @ts-nocheck
 export interface Upo {
   _declaration?: Declaration;
   _comment?: string;
@@ -67,5 +66,3 @@ export interface DeclarationAttributes {
   version?: string;
   encoding?: string;
 }
-
-

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Podmiot3 } from './fa2.types';
 import { FP, Podmiot2K } from './fa1.types';
 
@@ -29,5 +28,3 @@ export interface DaneIdentyfikacyjneTPodmiot2Dto {
   NrID?: FP;
   NrVatUE?: FP;
 }
-
-
