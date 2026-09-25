@@ -12,7 +12,8 @@ All notable changes to this package are documented here. The format follows
 
 - Reorganized the README around a runnable invoice quickstart, CommonJS/UPO/Base64
   recipes, API and input references, metadata/QR guidance, PEF, fonts, and troubleshooting.
-- Preserved the Polish support advertisement and added the mdab.it website link.
+- Retained the support advertisement, translated it into English, and added
+  the mdab.it website alongside LinkedIn.
 - Documented defaults, return types, encoding handling, process-wide font
   configuration, acquisition-date behavior, and compatibility API differences.
 

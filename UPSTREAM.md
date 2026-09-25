@@ -58,8 +58,8 @@ update this file and `CHANGELOG.md` before release.
 ### 1.1.1 - 2026-09-25
 
 - No upstream runtime changes; the imported baseline remains CIRFMF 1.1.40.
-- Reorganized and corrected the package usage documentation, preserved the
-  Polish support advertisement, and added mdab.it.
+- Reorganized and corrected the package usage documentation, translated the
+  support advertisement into English, and added mdab.it alongside LinkedIn.
 - Updated the package version and therefore the generated invoice footer.
 
 ### 1.1.0 - 2026-09-25

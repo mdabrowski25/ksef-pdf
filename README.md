@@ -53,7 +53,7 @@ itself. Adding `'utf8'` would decode a UTF-16 file incorrectly before rendering.
 - [Custom fonts](#custom-fonts)
 - [Compatibility and low-level APIs](#compatibility-and-low-level-apis)
 - [Troubleshooting](#troubleshooting)
-- [Wsparcie / Usługi](#wsparcie--usługi)
+- [Support / Services](#support--services)
 - [Release information](#release-information)
 
 ## Supported documents
@@ -336,15 +336,15 @@ selection, and translation initialization for you.
 | QR section or assignment date is absent | These values are optional and are not fetched automatically. Assignment dates are displayed only in FA/FA_RR layouts. |
 | PDF differs after upgrading | Compare content and layout rather than file hashes; labels, pagination, and the version footer may change. Read the release notes. |
 
-## Wsparcie / Usługi
+## Support / Services
 
-Potrzebujesz wsparcia przy integracji z KSeF, generowaniu PDF z faktur XML lub
-budowie własnych narzędzi wokół KSeF?
+Need help integrating with KSeF, generating PDFs from invoice XML, or building
+your own tools around KSeF?
 
-Skontaktuj się ze mną – chętnie pomogę w implementacji, integracji lub
-rozwiązaniu konkretnych problemów technicznych.
+Get in touch — I can help with implementation, integration, and resolving
+specific technical issues.
 
-Strona: [mdab.it](https://mdab.it)
+Website: [mdab.it](https://mdab.it)
 
 LinkedIn: [https://www.linkedin.com/in/mateusz-dabrowski25](https://www.linkedin.com/in/mateusz-dabrowski25)
 
