@@ -1,6 +1,6 @@
 {
   "name": "@mdab25/ksef-pdf",
-  "version": "1.2.0",
+  "version": "1.1.1",
   "description": "Node.js PDF generator for KSeF FA(1)/FA(2)/FA(3)/FA_RR(1), PEF invoices and UPO XML documents.",
   "type": "module",
   "license": "MIT",

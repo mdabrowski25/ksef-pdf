@@ -6,7 +6,7 @@ All notable changes to this package are documented here. The format follows
 
 ## [Unreleased]
 
-## [1.2.0] - 2026-09-25
+## [1.1.1] - 2026-09-25
 
 ### Changed
 
@@ -22,9 +22,9 @@ All notable changes to this package are documented here. The format follows
 - Register all four font styles in the README and migration examples to avoid
   missing-bold-font errors.
 
-This is a documentation-focused minor release. Runtime implementation,
+This is a documentation-focused patch release. Runtime implementation,
 dependencies, public APIs, and the CIRFMF 1.1.40 baseline are unchanged from
-1.1.0. Generated invoice footers now identify package version 1.2.0.
+1.1.0. Generated invoice footers now identify package version 1.1.1.
 
 ## [1.1.0] - 2026-09-25
 
@@ -124,8 +124,8 @@ See [Migrating to 1.0.0](docs/migration-to-1.0.md) for breaking changes.
 - Initial Node.js package for FA(1), FA(2), FA(3), UPO(4.2), and UPO(4.3) PDF rendering.
 - ESM/CJS builds and Node-friendly XML input adapters.
 
-[Unreleased]: https://github.com/mdabrowski25/ksef-pdf/compare/v1.2.0...HEAD
-[1.2.0]: https://github.com/mdabrowski25/ksef-pdf/compare/v1.1.0...v1.2.0
+[Unreleased]: https://github.com/mdabrowski25/ksef-pdf/compare/v1.1.1...HEAD
+[1.1.1]: https://github.com/mdabrowski25/ksef-pdf/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/mdabrowski25/ksef-pdf/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/mdabrowski25/ksef-pdf/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/mdabrowski25/ksef-pdf/compare/b804404...v1.0.0

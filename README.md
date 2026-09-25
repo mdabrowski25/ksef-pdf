@@ -350,10 +350,10 @@ LinkedIn: [https://www.linkedin.com/in/mateusz-dabrowski25](https://www.linkedin
 
 ## Release information
 
-- [Changelog](https://github.com/mdabrowski25/ksef-pdf/blob/v1.2.0/CHANGELOG.md)
-- [Migrating from 0.x to 1.0](https://github.com/mdabrowski25/ksef-pdf/blob/v1.2.0/docs/migration-to-1.0.md)
-- [CIRFMF upstream tracking](https://github.com/mdabrowski25/ksef-pdf/blob/v1.2.0/UPSTREAM.md)
-- [1.2.0 release notes](https://github.com/mdabrowski25/ksef-pdf/blob/v1.2.0/docs/releases/v1.2.0.md)
+- [Changelog](https://github.com/mdabrowski25/ksef-pdf/blob/v1.1.1/CHANGELOG.md)
+- [Migrating from 0.x to 1.0](https://github.com/mdabrowski25/ksef-pdf/blob/v1.1.1/docs/migration-to-1.0.md)
+- [CIRFMF upstream tracking](https://github.com/mdabrowski25/ksef-pdf/blob/v1.1.1/UPSTREAM.md)
+- [1.1.1 release notes](https://github.com/mdabrowski25/ksef-pdf/blob/v1.1.1/docs/releases/v1.1.1.md)
 
 ## Development
 
@@ -373,5 +373,5 @@ npm pack --dry-run
 ## License
 
 The package is MIT licensed. Adapted third-party code and its license notices
-are documented in [THIRD_PARTY_NOTICES.md](https://github.com/mdabrowski25/ksef-pdf/blob/v1.2.0/THIRD_PARTY_NOTICES.md)
-and [LICENSES](https://github.com/mdabrowski25/ksef-pdf/tree/v1.2.0/LICENSES).
+are documented in [THIRD_PARTY_NOTICES.md](https://github.com/mdabrowski25/ksef-pdf/blob/v1.1.1/THIRD_PARTY_NOTICES.md)
+and [LICENSES](https://github.com/mdabrowski25/ksef-pdf/tree/v1.1.1/LICENSES).

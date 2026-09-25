@@ -13,7 +13,7 @@ update this file and `CHANGELOG.md` before release.
 | Upstream release | `1.1.40` |
 | Upstream commit | `f59fc4e2addcf42c74b1674e7c1d534085bc3a84` |
 | Imported | 2026-09-25 |
-| Local package release | `1.2.0` |
+| Local package release | `1.1.1` |
 
 ## Imported capabilities
 
@@ -55,7 +55,7 @@ update this file and `CHANGELOG.md` before release.
 
 ## Local release history
 
-### 1.2.0 - 2026-09-25
+### 1.1.1 - 2026-09-25
 
 - No upstream runtime changes; the imported baseline remains CIRFMF 1.1.40.
 - Reorganized and corrected the package usage documentation, preserved the
