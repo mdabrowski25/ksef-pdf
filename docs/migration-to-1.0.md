@@ -70,10 +70,19 @@ import { configureFonts } from '@mdab25/ksef-pdf';
 configureFonts({
   vfs: { 'Company-Regular.ttf': companyFontBase64 },
   fonts: {
-    Company: { normal: 'Company-Regular.ttf' },
+    Company: {
+      normal: 'Company-Regular.ttf',
+      bold: 'Company-Regular.ttf',
+      italics: 'Company-Regular.ttf',
+      bolditalics: 'Company-Regular.ttf',
+    },
   },
 });
 ```
+
+This minimal mapping reuses one font for every style. Use separate font files
+to retain bold and italic appearance. See the [complete font example](../README.md#custom-fonts)
+for loading and registering four styles.
 
 ## Intentional output changes
 
