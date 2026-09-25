@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:ext="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2" xmlns:pl="urn:fdc:www.efaktura.gov.pl:ver2.0">
+
+<cbc:CustomizationID>urn:cen.eu:en16931:2017</cbc:CustomizationID>
+<cbc:ProfileID>urn:fdc:www.efaktura.gov.pl:ver2.0:plinv:ver1.4</cbc:ProfileID>
+<cbc:ID>PEF-specialized/2026/001</cbc:ID>
+<cbc:IssueDate>2026-09-25</cbc:IssueDate>
+<cbc:DueDate>2026-10-09</cbc:DueDate>
+<cbc:InvoiceTypeCode>380</cbc:InvoiceTypeCode>
+<cbc:DocumentCurrencyCode>PLN</cbc:DocumentCurrencyCode>
+
+<cac:AccountingSupplierParty>
+<cac:Party>
+<cac:PartyName>
+<cbc:Name>Żółć Test Sp. z o.o.</cbc:Name>
+</cac:PartyName>
+<cac:PostalAddress>
+<cbc:StreetName>ul. Łódzka 1</cbc:StreetName>
+<cbc:CityName>Łódź</cbc:CityName>
+<cbc:PostalZone>90-001</cbc:PostalZone>
+<cac:Country>
+<cbc:IdentificationCode>PL</cbc:IdentificationCode>
+</cac:Country>
+</cac:PostalAddress>
+<cac:PartyTaxScheme>
+<cbc:CompanyID>PL1111111111</cbc:CompanyID>
+<cac:TaxScheme>
+<cbc:ID>VAT</cbc:ID>
+</cac:TaxScheme>
+</cac:PartyTaxScheme>
+<cac:PartyLegalEntity>
+<cbc:RegistrationName>Żółć Test Sp. z o.o.</cbc:RegistrationName>
+</cac:PartyLegalEntity>
+</cac:Party>
+</cac:AccountingSupplierParty>
+<cac:AccountingCustomerParty>
+<cac:Party>
+<cac:PartyName>
+<cbc:Name>Nabywca Test</cbc:Name>
+</cac:PartyName>
+<cac:PostalAddress>
+<cbc:StreetName>ul. Łódzka 1</cbc:StreetName>
+<cbc:CityName>Łódź</cbc:CityName>
+<cbc:PostalZone>90-001</cbc:PostalZone>
+<cac:Country>
+<cbc:IdentificationCode>PL</cbc:IdentificationCode>
+</cac:Country>
+</cac:PostalAddress>
+<cac:PartyTaxScheme>
+<cbc:CompanyID>PL2222222222</cbc:CompanyID>
+<cac:TaxScheme>
+<cbc:ID>VAT</cbc:ID>
+</cac:TaxScheme>
+</cac:PartyTaxScheme>
+<cac:PartyLegalEntity>
+<cbc:RegistrationName>Nabywca Test</cbc:RegistrationName>
+</cac:PartyLegalEntity>
+</cac:Party>
+</cac:AccountingCustomerParty>
+<cac:PaymentMeans>
+<cbc:PaymentMeansCode>30</cbc:PaymentMeansCode>
+<cbc:PaymentDueDate>2026-10-09</cbc:PaymentDueDate>
+<cac:PayeeFinancialAccount>
+<cbc:ID>PL61109010140000071219812874</cbc:ID>
+</cac:PayeeFinancialAccount>
+</cac:PaymentMeans>
+<cac:TaxTotal>
+<cbc:TaxAmount currencyID="PLN">230.00</cbc:TaxAmount>
+<cac:TaxSubtotal>
+<cbc:TaxableAmount currencyID="PLN">1000.00</cbc:TaxableAmount>
+<cbc:TaxAmount currencyID="PLN">230.00</cbc:TaxAmount>
+<cac:TaxCategory>
+<cbc:ID>S</cbc:ID>
+<cbc:Percent>23</cbc:Percent>
+<cac:TaxScheme>
+<cbc:ID>VAT</cbc:ID>
+</cac:TaxScheme>
+</cac:TaxCategory>
+</cac:TaxSubtotal>
+</cac:TaxTotal>
+<cac:LegalMonetaryTotal>
+<cbc:LineExtensionAmount currencyID="PLN">1000.00</cbc:LineExtensionAmount>
+<cbc:TaxExclusiveAmount currencyID="PLN">1000.00</cbc:TaxExclusiveAmount>
+<cbc:TaxInclusiveAmount currencyID="PLN">1230.00</cbc:TaxInclusiveAmount>
+<cbc:PayableAmount currencyID="PLN">1230.00</cbc:PayableAmount>
+</cac:LegalMonetaryTotal>
+<cac:InvoiceLine>
+<cbc:ID>1</cbc:ID>
+<cbc:InvoicedQuantity unitCode="HUR">10</cbc:InvoicedQuantity>
+<cbc:LineExtensionAmount currencyID="PLN">1000.00</cbc:LineExtensionAmount>
+<cac:Item>
+<cbc:Name>Usługa wdrożeniowa Łódź</cbc:Name>
+<cac:ClassifiedTaxCategory>
+<cbc:ID>S</cbc:ID>
+<cbc:Percent>23</cbc:Percent>
+<cac:TaxScheme>
+<cbc:ID>VAT</cbc:ID>
+</cac:TaxScheme>
+</cac:ClassifiedTaxCategory>
+</cac:Item>
+<cac:Price>
+<cbc:PriceAmount currencyID="PLN">100.00</cbc:PriceAmount>
+<cbc:BaseQuantity unitCode="HUR">1</cbc:BaseQuantity>
+</cac:Price>
+</cac:InvoiceLine>
+</Invoice>

@@ -7,6 +7,13 @@ import { generateFA1 } from './upstream/lib-public/FA1-generator';
 import { generateFA2 } from './upstream/lib-public/FA2-generator';
 import { generateFA3 } from './upstream/lib-public/FA3-generator';
 import { generateFARR } from './upstream/lib-public/FARR-generator';
+import { generateBasicPEF } from './upstream/lib-public/PEF-basic-generator';
+import { generateCorrectivePEF } from './upstream/lib-public/PEF-corrective-generator';
+import { generateSpecPEF } from './upstream/lib-public/PEF-spec-generator';
+import type { PEFBasicInvoice } from './upstream/lib-public/types/pef-invoice.types';
+import type { PEFCorrectiveInvoice } from './upstream/lib-public/types/pef-invoice-corrective.types';
+import type { PEFSpecInvoice } from './upstream/lib-public/types/pef-invoice-spec.types';
+import { xmlInputToString, type XmlInput } from './xml-input';
 import { configureFonts } from './upstream/lib-public/configure-fonts';
 import type { FontConfig } from './upstream/lib-public/configure-fonts';
 import { i18nReady } from './upstream/lib-public/i18n/i18n-init';
@@ -46,8 +53,9 @@ if (pdfMakeRuntime.setUrlAccessPolicy) {
   pdfMakeRuntime.urlAccessPolicy = denyRemoteResource;
 }
 
-export type XmlInput = string | ArrayBuffer | Uint8Array | Blob | File;
+export type { XmlInput } from './xml-input';
 export type KsefInvoiceVersion = 'FA(1)' | 'FA(2)' | 'FA(3)' | 'FA_RR(1)';
+export type PefInvoiceVersion = 'PEF' | 'PEF-CORRECTIVE' | 'PEF-SPECIALIZED';
 export type KsefUpoVersion = 'UPO(4.2)' | 'UPO(4.3)';
 
 export interface RenderInvoiceOptions {
@@ -76,18 +84,22 @@ export function detectUpoVersion(xml: string): KsefUpoVersion | null {
   return null;
 }
 
+/** PEF detection is separate to preserve the existing FA detection return type. */
+export function detectPefInvoiceVersion(xml: string): PefInvoiceVersion | null {
+  const parsed = stripPrefixes(xml2js(xml, { compact: true }));
+  return getPefVersion(parsed);
+}
+
 export async function renderPdfFromXml(
   xml: XmlInput,
   options: RenderInvoiceOptions = {},
 ): Promise<Uint8Array> {
   const parsed = await parseXmlInput(xml);
   const invoice = getInvoiceRoot(parsed);
-  const version = normalizeInvoiceVersion(
-    invoice?.Naglowek?.KodFormularza?._attributes?.kodSystemowy,
-  );
+  const version = getInvoiceVersion(parsed, invoice);
 
   if (!version) {
-    throw new Error('Unsupported or missing invoice version. Expected FA(1), FA(2), FA(3), or FA_RR(1).');
+    throw new Error('Unsupported or missing invoice version. Expected FA(1), FA(2), FA(3), FA_RR(1), or a supported PEF profile.');
   }
 
   await i18nReady;
@@ -161,12 +173,10 @@ export async function generateInvoice(
 ): Promise<Blob | string | Uint8Array> {
   const parsed = await parseXmlInput(file);
   const invoice = getInvoiceRoot(parsed);
-  const version = normalizeInvoiceVersion(
-    invoice?.Naglowek?.KodFormularza?._attributes?.kodSystemowy,
-  );
+  const version = getInvoiceVersion(parsed, invoice);
 
   if (!version) {
-    throw new Error(`Unsupported invoice version: ${String(invoice?.Naglowek?.KodFormularza?._attributes?.kodSystemowy)}`);
+    throw new Error(`Unsupported invoice version: ${String(invoice?.Naglowek?.KodFormularza?._attributes?.kodSystemowy ?? invoice?.ProfileID?._text)}`);
   }
 
   await i18nReady;
@@ -194,7 +204,7 @@ export async function generatePDFUPO(
 
 function createInvoicePdf(
   invoice: Record<string, any>,
-  version: KsefInvoiceVersion,
+  version: KsefInvoiceVersion | PefInvoiceVersion,
   additionalData: AdditionalDataTypes,
 ): TCreatedPdf {
   switch (version) {
@@ -206,7 +216,32 @@ function createInvoicePdf(
       return generateFA3(invoice as Faktura3, additionalData);
     case 'FA_RR(1)':
       return generateFARR(invoice as FaRR, additionalData);
+    case 'PEF':
+      return generateBasicPEF(invoice as PEFBasicInvoice, additionalData);
+    case 'PEF-CORRECTIVE':
+      return generateCorrectivePEF(invoice as PEFCorrectiveInvoice, additionalData);
+    case 'PEF-SPECIALIZED':
+      return generateSpecPEF(invoice as PEFSpecInvoice, additionalData);
   }
+}
+
+function getInvoiceVersion(parsed: any, invoice: Record<string, any>): KsefInvoiceVersion | PefInvoiceVersion | null {
+  if (parsed?.Faktura || parsed?.FakturaRR) {
+    return normalizeInvoiceVersion(invoice?.Naglowek?.KodFormularza?._attributes?.kodSystemowy);
+  }
+  return getPefVersion(parsed);
+}
+
+function getPefVersion(parsed: any): PefInvoiceVersion | null {
+  switch (parsed?.Invoice?.ProfileID?._text?.trim()) {
+    case 'urn:fdc:peppol.eu:2017:poacc:billing:01:1.0':
+      return 'PEF';
+    case 'urn:fdc:www.efaktura.gov.pl:ver2.0:plinv:ver1.4':
+      return 'PEF-SPECIALIZED';
+  }
+  return parsed?.CreditNote?.ProfileID?._text?.trim() === 'urn:fdc:www.efaktura.gov.pl:ver2.0:corr_inv:ver4.0'
+    ? 'PEF-CORRECTIVE'
+    : null;
 }
 
 function normalizeInvoiceVersion(versionValue: unknown): KsefInvoiceVersion | null {
@@ -224,9 +259,9 @@ function normalizeInvoiceVersion(versionValue: unknown): KsefInvoiceVersion | nu
 }
 
 function getInvoiceRoot(parsed: any): Record<string, any> {
-  const invoice = parsed?.Faktura ?? parsed?.FakturaRR;
+  const invoice = parsed?.Faktura ?? parsed?.FakturaRR ?? parsed?.Invoice ?? parsed?.CreditNote;
   if (!invoice) {
-    throw new Error('Invalid invoice XML: missing Faktura root node.');
+    throw new Error('Invalid invoice XML: missing Faktura, FakturaRR, Invoice, or CreditNote root node.');
   }
   return invoice;
 }
@@ -249,22 +284,6 @@ function stripPrefixes(value: any): any {
     );
   }
   return value;
-}
-
-async function xmlInputToString(xml: XmlInput): Promise<string> {
-  if (typeof xml === 'string') {
-    return xml;
-  }
-  if (xml instanceof Uint8Array) {
-    return new TextDecoder().decode(xml);
-  }
-  if (xml instanceof ArrayBuffer) {
-    return new TextDecoder().decode(new Uint8Array(xml));
-  }
-  if (typeof Blob !== 'undefined' && xml instanceof Blob) {
-    return xml.text();
-  }
-  throw new Error('Unsupported XML input type.');
 }
 
 function formatAcquisitionDate(value?: string | Date): string | undefined {
@@ -295,3 +314,4 @@ function createPageFooter(currentPage: number, pageCount: number) {
 
 export type { AdditionalDataTypes, FontConfig };
 export { configureFonts, generateFA1, generateFA2, generateFA3, generateFARR };
+export { generateBasicPEF, generateCorrectivePEF, generateSpecPEF };

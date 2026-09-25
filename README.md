@@ -21,6 +21,7 @@ LinkedIn: [https://www.linkedin.com/in/mateusz-dabrowski25](https://www.linkedin
 | FA(2) | Yes |
 | FA(3) | Yes |
 | FA_RR(1) | Yes |
+| PEF basic, corrective, specialized | Yes |
 | UPO(4.2) | Yes |
 | UPO(4.3) | Yes |
 
@@ -55,6 +56,27 @@ await writeFile('./invoice.pdf', pdf);
 `renderPdfFromXml` and `renderPdfBase64FromXml` accept `string`, `Uint8Array`,
 `ArrayBuffer`, `Blob`, or `File` input. `ksefAcquisitionDate` accepts an ISO date,
 ISO timestamp, or `Date` and is rendered as `DD.MM.YYYY`.
+
+Binary XML inputs support UTF-8 and UTF-16 LE/BE, with or without a byte-order
+mark. The same input handling applies to UPO and compatibility APIs.
+
+## PEF invoices
+
+Use `renderPdfFromXml`, `renderPdfBase64FromXml`, or `generateInvoice` for PEF
+documents too. The renderer selects the upstream PEF layout from the XML root
+and `ProfileID`:
+
+| Root | ProfileID | Kind |
+|---|---|---|
+| `Invoice` | `urn:fdc:peppol.eu:2017:poacc:billing:01:1.0` | Basic |
+| `CreditNote` | `urn:fdc:www.efaktura.gov.pl:ver2.0:corr_inv:ver4.0` | Corrective |
+| `Invoice` | `urn:fdc:www.efaktura.gov.pl:ver2.0:plinv:ver1.4` | Specialized |
+
+`detectPefInvoiceVersion(xml)` returns `PEF`, `PEF-CORRECTIVE`,
+`PEF-SPECIALIZED`, or `null` for an unsupported profile. It throws on malformed
+XML. The existing `detectInvoiceVersion` helper keeps its FA-only return type.
+Low-level PEF exports are `generateBasicPEF`, `generateCorrectivePEF`, and
+`generateSpecPEF`, with the same Promise-based pdfmake methods as the FA exports.
 
 ## Offline QR2
 
@@ -93,7 +115,7 @@ the low-level pdfmake object to Promise-based methods.
 - [Changelog](CHANGELOG.md)
 - [Migrating to 1.0.0](docs/migration-to-1.0.md)
 - [CIRFMF upstream tracking](UPSTREAM.md)
-- [1.0.1 release notes](docs/releases/v1.0.1.md)
+- [1.1.0 release notes](docs/releases/v1.1.0.md)
 
 ## Development
 

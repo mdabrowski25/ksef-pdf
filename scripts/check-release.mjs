@@ -19,6 +19,9 @@ const invoiceGeneratorSources = await Promise.all(
     'src/upstream/lib-public/FA2-generator.ts',
     'src/upstream/lib-public/FA3-generator.ts',
     'src/upstream/lib-public/FARR-generator.ts',
+    'src/upstream/lib-public/PEF-basic-generator.ts',
+    'src/upstream/lib-public/PEF-corrective-generator.ts',
+    'src/upstream/lib-public/PEF-spec-generator.ts',
     'src/upstream/lib-public/types/common.types.ts',
   ].map(read),
 );
@@ -27,7 +30,8 @@ assert.equal(packageJson.engines.node, '>=22');
 assert.equal(packageLock.version, packageJson.version);
 assert.equal(packageLock.packages[''].version, packageJson.version);
 assert.match(changelog, new RegExp(`^## \\[${packageJson.version.replaceAll('.', '\\.')}\\]`, 'm'));
-assert.match(upstream, /2b7c1daea6fc3438a4cf28195f2deac75dda4220/);
+assert.match(upstream, /f59fc4e2addcf42c74b1674e7c1d534085bc3a84/);
+assert.ok(upstream.includes(`| Local package release | \`${packageJson.version}\` |`));
 assert.match(
   releaseNotes,
   new RegExp(`^# ${packageJson.name} v${packageJson.version.replaceAll('.', '\\.')}$`, 'm'),

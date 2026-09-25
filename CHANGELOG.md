@@ -6,6 +6,31 @@ All notable changes to this package are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-09-25
+
+### Added
+
+- PEF basic, corrective, and specialized invoice rendering through the existing
+  Node APIs, plus `detectPefInvoiceVersion` and three low-level PEF generators.
+- UTF-16 LE/BE XML decoding, with or without a BOM, for binary invoice and UPO
+  inputs, including Node `Blob` and `File` values.
+- Regression coverage for encoded inputs, PEF content and correction amounts,
+  output formats, and the upstream transport fix.
+
+### Fixed
+
+- Render descriptions of other cargo even when no standard cargo code is set.
+- Apply currency formatting to transaction exchange rates.
+- Add spacing after the KSeF number label and correct the UPO document-parts label.
+
+### Changed
+
+- Synchronized the vendored renderer from CIRFMF `1.1.31` to `1.1.40`
+  (`f59fc4e`), including the `1.1.36` and `1.1.39` releases.
+- Use upstream's typed translation resources.
+- Preserve the existing FA detection type, Node 22 requirement, ESM/CJS APIs,
+  virtual fonts, resource policies, QR options, package footers, and Warsaw date handling.
+
 ## [1.0.1] - 2026-08-20
 
 ### Fixed
@@ -79,7 +104,8 @@ See [Migrating to 1.0.0](docs/migration-to-1.0.md) for breaking changes.
 - Initial Node.js package for FA(1), FA(2), FA(3), UPO(4.2), and UPO(4.3) PDF rendering.
 - ESM/CJS builds and Node-friendly XML input adapters.
 
-[Unreleased]: https://github.com/mdabrowski25/ksef-pdf/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/mdabrowski25/ksef-pdf/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/mdabrowski25/ksef-pdf/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/mdabrowski25/ksef-pdf/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/mdabrowski25/ksef-pdf/compare/b804404...v1.0.0
 [0.2.3]: https://github.com/mdabrowski25/ksef-pdf/compare/b39afb2...b804404

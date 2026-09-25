@@ -17,9 +17,9 @@ package retains both notices:
 The vendored and adapted source code is located under `src/upstream`.
 
 Current imported baseline:
-- Release: `1.1.31`
-- Commit: `2b7c1daea6fc3438a4cf28195f2deac75dda4220`
-- Imported: 2026-08-20
+- Release: `1.1.40`
+- Commit: `f59fc4e2addcf42c74b1674e7c1d534085bc3a84`
+- Imported: 2026-09-25
 
 Changes in this package include:
 - Node.js-oriented XML input handling (`string`/`Uint8Array`/`Blob`)

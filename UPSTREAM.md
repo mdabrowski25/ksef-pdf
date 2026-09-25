@@ -10,15 +10,18 @@ update this file and `CHANGELOG.md` before release.
 | Field | Value |
 |---|---|
 | Upstream branch | `main` |
-| Upstream release | `1.1.31` |
-| Upstream commit | `2b7c1daea6fc3438a4cf28195f2deac75dda4220` |
-| Imported | 2026-08-20 |
-| Local package release | `1.0.1` |
+| Upstream release | `1.1.40` |
+| Upstream commit | `f59fc4e2addcf42c74b1674e7c1d534085bc3a84` |
+| Imported | 2026-09-25 |
+| Local package release | `1.1.0` |
 
 ## Imported capabilities
 
 - FA(1), FA(2), FA(3), and FA_RR(1) invoice visualization.
 - UPO(4.2) and UPO(4.3) visualization.
+- PEF basic, corrective, and specialized invoices.
+- UTF-16 LE/BE input decoding, transaction exchange-rate formatting, other-cargo
+  rendering, KSeF header spacing, and corrected UPO document-parts text.
 - Polish and English label resources, with Polish as this package's default.
 - QR1/QR2, KSeF-number acquisition date, custom virtual fonts, attachments,
   collective-correction fixes, P_15 fixes, number formatting, and pagination fixes.
@@ -29,10 +32,14 @@ update this file and `CHANGELOG.md` before release.
 - The Vite demo application and browser-only entry point.
 - Browser language detectors and HTTP translation backends.
 - TEST/DEMO watermark propagation.
+- Upstream's demo/build/test dependency changes; this package keeps its own
+  Node build and test toolchain. Its existing pdfmake 0.3.11 baseline already
+  satisfies the renderer update introduced in upstream 1.1.36.
 
 ## Local adaptations
 
 - Node 22+ XML inputs: `string`, `Uint8Array`, `ArrayBuffer`, `Blob`, and `File`.
+- Shared UTF-8/UTF-16 decoding for Node inputs and the vendored XML parser.
 - ESM and CJS package entry points returning bytes, Base64, or Blob values.
 - Explicit `.js` pdfmake subpath imports required by Node ESM resolution.
 - pdfmake 0.3 Promise adapters and deny-by-default local/URL resource policies.
@@ -40,17 +47,21 @@ update this file and `CHANGELOG.md` before release.
 - Deterministic Europe/Warsaw timestamp formatting across host time zones while
   preserving timezone-free XML values as local wall times.
 - PDF footer identity uses `@mdab25/ksef-pdf` and the package version.
+- PEF footer identity also uses the package name and version.
+- Public PEF dispatch validates the root and profile together; PEF detection is
+  a separate helper so the existing FA version type stays unchanged.
 - The high-level API normalizes spaced/unspaced schema identifiers and formats
   the KSeF acquisition date as `DD.MM.YYYY`.
 
-## Known upstream gap
-
-The public CIRFMF repository currently ends at 1.1.31. A PDF downloaded from the
-KSeF TEST portal on 2026-08-19 reported renderer 1.1.36. This package does not
-claim that unreleased version. Portal-only behavior must be verified separately
-or imported when CIRFMF publishes it.
-
 ## Local release history
+
+### 1.1.0 - 2026-09-25
+
+- Imported public upstream releases 1.1.36, 1.1.39, and 1.1.40. The previously
+  recorded gap between the public repository and portal renderer 1.1.36 is closed.
+- Upstream license files and runtime dependency requirements remain compatible.
+- Preserved local adaptations and extended the Node APIs to the new PEF and
+  UTF-16 functionality. No migration from 1.0.x is required.
 
 ### 1.0.1 - 2026-08-20
 
