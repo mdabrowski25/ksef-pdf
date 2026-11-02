@@ -13,7 +13,7 @@ update this file and `CHANGELOG.md` before release.
 | Upstream release | `1.1.40` |
 | Upstream commit | `f59fc4e2addcf42c74b1674e7c1d534085bc3a84` |
 | Imported | 2026-09-25 |
-| Local package release | `1.1.1` |
+| Local package release | `1.1.2` |
 
 ## Imported capabilities
 
@@ -54,6 +54,13 @@ update this file and `CHANGELOG.md` before release.
   the KSeF acquisition date as `DD.MM.YYYY`.
 
 ## Local release history
+
+### 1.1.2 - 2026-11-02
+
+- No upstream runtime changes; the imported baseline remains CIRFMF 1.1.40.
+- Linked the package author and README support section to mdab.it and updated
+  development dependencies to clear `npm audit` advisories.
+- Updated the package version and therefore the generated invoice footer.
 
 ### 1.1.1 - 2026-09-25
 

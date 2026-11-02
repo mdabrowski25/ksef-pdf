@@ -6,11 +6,19 @@ All notable changes to this package are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.1.2] - 2026-11-02
+
 ### Changed
 
 - Package `author` metadata names Mateusz Dąbrowski and links to mdab.it.
 - The README support section links to the KSeF invoice automation case study
   that uses this package.
+- Development dependencies (vitest, vite, and source-map-js through tsup) were
+  updated to clear new `npm audit` advisories.
+
+This is a metadata and documentation patch release. Runtime implementation,
+runtime dependencies, public APIs, and the CIRFMF 1.1.40 baseline are unchanged
+from 1.1.1. Generated invoice footers now identify package version 1.1.2.
 
 ## [1.1.1] - 2026-09-25
 
@@ -131,7 +139,8 @@ See [Migrating to 1.0.0](docs/migration-to-1.0.md) for breaking changes.
 - Initial Node.js package for FA(1), FA(2), FA(3), UPO(4.2), and UPO(4.3) PDF rendering.
 - ESM/CJS builds and Node-friendly XML input adapters.
 
-[Unreleased]: https://github.com/mdabrowski25/ksef-pdf/compare/v1.1.1...HEAD
+[Unreleased]: https://github.com/mdabrowski25/ksef-pdf/compare/v1.1.2...HEAD
+[1.1.2]: https://github.com/mdabrowski25/ksef-pdf/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/mdabrowski25/ksef-pdf/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/mdabrowski25/ksef-pdf/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/mdabrowski25/ksef-pdf/compare/v1.0.0...v1.0.1
