@@ -30,7 +30,7 @@ assert.equal(packageJson.engines.node, '>=22');
 assert.equal(packageLock.version, packageJson.version);
 assert.equal(packageLock.packages[''].version, packageJson.version);
 assert.match(changelog, new RegExp(`^## \\[${packageJson.version.replaceAll('.', '\\.')}\\]`, 'm'));
-assert.match(upstream, /f59fc4e2addcf42c74b1674e7c1d534085bc3a84/);
+assert.match(upstream, /8a18843db12d0013a417500bb2f98bfe49b7d2a8/);
 assert.ok(upstream.includes(`| Local package release | \`${packageJson.version}\` |`));
 assert.match(
   releaseNotes,

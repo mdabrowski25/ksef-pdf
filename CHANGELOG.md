@@ -6,6 +6,34 @@ All notable changes to this package are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.1.3] - 2026-11-02
+
+### Fixed
+
+- Use exact integer-cent arithmetic for FA(1), FA(2), and FA(3) VAT summaries,
+  preserving small amounts and avoiding floating-point loss on large totals.
+- Trim numeric input before reading its sign, preventing upstream's new amount
+  parser from misreading whitespace-padded negative XML values. Round excess
+  decimal places to cents with midpoint ties away from zero; reject malformed
+  nonempty amounts rather than displaying an invalid total.
+- Display the FA(3) corrected buyer's JST/GV flags and customer number even when
+  contact details are absent.
+- Display a single intermediate shipping address in FA(1), FA(2), and FA(3).
+- Omit missing PEF corrective total sections and show a dash for an absent
+  header payable amount instead of rendering `undefined`. Guard a correction
+  extension whose `LegalMonetaryTotal` is absent so rendering does not throw.
+- Keep slash-separated invoice numbers readable in dated PEF correction
+  references instead of displaying HTML entities such as `&#x2F;`.
+- Normalize invoice-number whitespace, OSS tax amount separators, quantities
+  in collective corrections, settlement amount grouping, and RR/PEF header spacing.
+
+### Changed
+
+- Synchronized the vendored renderer from CIRFMF `1.1.40` to stable `1.1.46`
+  (`8a18843`) and added regressions against the real amount helpers and Node API.
+- Preserved public APIs, Node.js 22+, runtime dependencies, package footers,
+  date handling, resource policies, and the exclusion of watermarks.
+
 ## [1.1.2] - 2026-11-02
 
 ### Changed
@@ -139,7 +167,8 @@ See [Migrating to 1.0.0](docs/migration-to-1.0.md) for breaking changes.
 - Initial Node.js package for FA(1), FA(2), FA(3), UPO(4.2), and UPO(4.3) PDF rendering.
 - ESM/CJS builds and Node-friendly XML input adapters.
 
-[Unreleased]: https://github.com/mdabrowski25/ksef-pdf/compare/v1.1.2...HEAD
+[Unreleased]: https://github.com/mdabrowski25/ksef-pdf/compare/v1.1.3...HEAD
+[1.1.3]: https://github.com/mdabrowski25/ksef-pdf/compare/v1.1.2...v1.1.3
 [1.1.2]: https://github.com/mdabrowski25/ksef-pdf/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/mdabrowski25/ksef-pdf/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/mdabrowski25/ksef-pdf/compare/v1.0.1...v1.1.0

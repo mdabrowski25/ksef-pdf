@@ -7,7 +7,6 @@ import {
   CustomTableLayout,
   Margins,
   Style,
-  TableCell,
   TDocumentDefinitions,
 } from 'pdfmake/interfaces';
 import {
@@ -200,6 +199,14 @@ export function getValue(value: FP | string | number | undefined): string | numb
   return value;
 }
 
+export function getStrippedValue(value: FP | string | undefined): string | undefined {
+  if (typeof value === 'object') {
+    return value?._text?.replace(/\s+/g, ' ').trim();
+  }
+
+  return value?.replace(/\s+/g, ' ').trim();
+}
+
 export function getNumber(value: FP | string | number | undefined): number {
   const text: string | number | undefined = getValue(value);
 
@@ -213,10 +220,61 @@ export function getNumber(value: FP | string | number | undefined): number {
   return parseFloat(text.toString());
 }
 
-export function getNumberRounded(value: FP | string | number | undefined): number {
-  const number: number = getNumber(value);
+export function getNumberToString(value: FP | string | number | undefined): string {
+  const text: string | number | undefined = getValue(value);
 
-  return Math.round(number * 100) / 100;
+  if (!text) {
+    return '0';
+  }
+  return text.toString();
+}
+
+export function toBigInt(value: FP | string | number | undefined): bigint {
+  const text: string | number | undefined = getValue(value);
+
+  if (text === undefined || text === '') {
+    return 0n;
+  }
+
+  if (typeof text === 'number' && !Number.isFinite(text)) {
+    throw new TypeError('Invalid decimal amount');
+  }
+
+  // Node XML input preserves whitespace. Detect the sign only after trimming.
+  const normalized = text.toString().trim().replace(',', '.');
+  if (!normalized) {
+    return 0n;
+  }
+
+  // JS prints numbers below 1e-6 or at least 1e21 in exponent notation.
+  // The former round to zero cents; the latter are already integer values.
+  if (typeof text === 'number' && normalized.includes('e')) {
+    return Math.abs(text) < 1 ? 0n : BigInt(text) * 100n;
+  }
+
+  const parts = /^([+-]?)(\d*)(?:\.(\d*))?$/.exec(normalized);
+  if (!parts || (!parts[2] && !parts[3])) {
+    throw new TypeError('Invalid decimal amount');
+  }
+
+  const decimal = parts[3] ?? '';
+  let cents = BigInt(parts[2] || '0') * 100n + BigInt((decimal + '00').slice(0, 2));
+  // Round excess precision in decimal arithmetic, with ties away from zero.
+  // Canonical KSeF summary amounts already have at most two decimal places.
+  if (decimal.length > 2 && decimal[2] >= '5') {
+    cents += 1n;
+  }
+
+  return parts[1] === '-' ? -cents : cents;
+}
+
+export function formatBigInt(value: bigint): string {
+  const negative = value < BigInt(0);
+  const abs = negative ? -value : value;
+  const intPart = abs / BigInt(100);
+  const decPart = (abs % BigInt(100)).toString().padStart(2, '0');
+
+  return `${negative ? '-' : ''}${intPart}.${decPart}`;
 }
 
 export function createLabelTextArray(data: CreateLabelTextData[]): Content[] {
