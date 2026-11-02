@@ -6,6 +6,12 @@ All notable changes to this package are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+
+- Package `author` metadata names Mateusz Dąbrowski and links to mdab.it.
+- The README support section links to the KSeF invoice automation case study
+  that uses this package.
+
 ## [1.1.1] - 2026-09-25
 
 ### Changed

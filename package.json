@@ -4,7 +4,10 @@
   "description": "Node.js PDF generator for KSeF FA(1)/FA(2)/FA(3)/FA_RR(1), PEF invoices and UPO XML documents.",
   "type": "module",
   "license": "MIT",
-  "author": "mdabrowski25",
+  "author": {
+    "name": "Mateusz Dąbrowski",
+    "url": "https://mdab.it"
+  },
   "homepage": "https://github.com/mdabrowski25/ksef-pdf",
   "repository": {
     "type": "git",

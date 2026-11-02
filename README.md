@@ -346,6 +346,9 @@ specific technical issues.
 
 Website: [mdab.it](https://mdab.it)
 
+Case study: [KSeF invoice automation with n8n](https://mdab.it/en/case-studies/invoice-automation/),
+a production workflow that renders its invoice PDFs with this package.
+
 LinkedIn: [https://www.linkedin.com/in/mateusz-dabrowski25](https://www.linkedin.com/in/mateusz-dabrowski25)
 
 ## Release information
