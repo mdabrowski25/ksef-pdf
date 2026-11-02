@@ -10,10 +10,10 @@ update this file and `CHANGELOG.md` before release.
 | Field | Value |
 |---|---|
 | Upstream branch | `main` |
-| Upstream release | `1.1.40` |
-| Upstream commit | `f59fc4e2addcf42c74b1674e7c1d534085bc3a84` |
-| Imported | 2026-09-25 |
-| Local package release | `1.1.2` |
+| Upstream release | `1.1.46` |
+| Upstream commit | `8a18843db12d0013a417500bb2f98bfe49b7d2a8` |
+| Imported | 2026-11-02 |
+| Local package release | `1.1.3` |
 
 ## Imported capabilities
 
@@ -26,6 +26,9 @@ update this file and `CHANGELOG.md` before release.
 - QR1/QR2, KSeF-number acquisition date, custom virtual fonts, attachments,
   collective-correction fixes, P_15 fixes, number formatting, and pagination fixes.
 - The full upstream generator unit suite under `src/upstream`.
+- Exact-cent FA VAT summaries, corrected-buyer JST/GV/customer details,
+  singleton intermediate shipping addresses, missing PEF total handling,
+  invoice-number whitespace, and amount/header formatting fixes from 1.1.46.
 
 ## Excluded upstream code
 
@@ -35,6 +38,11 @@ update this file and `CHANGELOG.md` before release.
 - Upstream's demo/build/test dependency changes; this package keeps its own
   Node build and test toolchain. Its existing pdfmake 0.3.11 baseline already
   satisfies the renderer update introduced in upstream 1.1.36.
+- Unreleased `release/1.1.48` changes (reviewed on 2026-11-02; upstream planned
+  release 2026-11-06): PDF Creator/Producer metadata, PEF/UPO watermarks, and
+  the new UPO options argument. Revisit metadata after a stable release while
+  preserving this package's identity, watermark exclusion, and existing UPO
+  second `formatType` argument. See [upstream PR #154](https://github.com/CIRFMF/ksef-pdf-generator/pull/154).
 
 ## Local adaptations
 
@@ -52,8 +60,33 @@ update this file and `CHANGELOG.md` before release.
   a separate helper so the existing FA version type stays unchanged.
 - The high-level API normalizes spaced/unspaced schema identifiers and formats
   the KSeF acquisition date as `DD.MM.YYYY`.
+- The integer-cent amount helper trims numeric whitespace before sign detection,
+  rounds excess fractional digits with ties away from zero, and rejects invalid
+  nonempty decimal input. Upstream 1.1.46 assumes already-trimmed XML and truncates
+  excess digits; the Node API preserves XML text whitespace.
+- The PEF header guards missing `LegalMonetaryTotal` inside an existing correction
+  extension. Upstream 1.1.46 handles a missing payable amount but still dereferences
+  the absent totals object in that case.
+- Dated PEF correction references disable HTML escaping for that translation's
+  interpolation only. pdfmake renders plain text, so HTML-escaped slashes would
+  otherwise appear literally as `&#x2F;` in invoice numbers.
 
 ## Local release history
+
+### 1.1.3 - 2026-11-02
+
+- Imported stable upstream 1.1.46, including all 16 changed runtime files and
+  the associated upstream test updates. Existing local adaptations are retained.
+- Corrected the whitespace/sign integration issue in upstream's new `toBigInt`
+  helper and retained decimal rounding for excess-precision summary amounts.
+- Completed the upstream PEF missing-total fix with a null guard for a correction
+  extension that exists without `LegalMonetaryTotal`.
+- Corrected dated PEF correction references that displayed HTML-escaped invoice
+  numbers in plain-text PDF output.
+- Added regression coverage that exercises actual amount arithmetic, the public
+  XML-to-PDF path, and the changed invoice sections.
+- Runtime dependencies, public exports, licenses, and Node requirement are
+  unchanged. No migration from 1.1.x is required.
 
 ### 1.1.2 - 2026-11-02
 

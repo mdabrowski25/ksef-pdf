@@ -171,7 +171,11 @@ function addInvoiceNumber(billingReference: PEFInvoiceBillingReference): Content
     const id = getText(billingReference?.InvoiceDocumentReference?.ID);
     const date = `${(formatText(getText(billingReference?.InvoiceDocumentReference?.IssueDate), FormatTyp.Date) as ContentText).text}`;
 
-    return formatText(i18n.t('pef.invoiceDescrption.dated', { id, date }), FormatTyp.Label);
+    // pdfmake renders plain text, so HTML escaping would print entities in the invoice number.
+    return formatText(
+      i18n.t('pef.invoiceDescrption.dated', { id, date, interpolation: { escapeValue: false } }),
+      FormatTyp.Label
+    );
   } else {
     return formatText(getText(billingReference?.InvoiceDocumentReference?.ID), FormatTyp.Label);
   }

@@ -71,6 +71,12 @@ invoices represented by the supported schemas. This package adapts the public
 A successfully generated PDF does not establish that its source XML is valid
 for submission to KSeF.
 
+FA VAT summaries use the net and tax amounts supplied in XML; the renderer does
+not recalculate VAT from a tax rate. Version 1.1.3 uses exact integer cents for
+these summaries, including the displayed net-plus-tax gross amount. Numeric
+whitespace is trimmed. Noncanonical summary amounts with more than two decimal
+places are rounded to cents, with midpoint ties away from zero.
+
 ## Common recipes
 
 ### CommonJS
@@ -180,7 +186,8 @@ the quickstart creates a small Node.js script that calls the library.
 ### Errors
 
 Rendering returns a rejected Promise for malformed XML, an unsupported invoice
-schema/profile, a missing document root, or a PDF-generation failure. Catch
+schema/profile, a missing document root, an invalid nonempty VAT-summary amount,
+or a PDF-generation failure. Catch
 errors at your application boundary, as in the CommonJS example. Error messages
 are diagnostic text, not stable error codes.
 
@@ -353,10 +360,10 @@ LinkedIn: [https://www.linkedin.com/in/mateusz-dabrowski25](https://www.linkedin
 
 ## Release information
 
-- [Changelog](https://github.com/mdabrowski25/ksef-pdf/blob/v1.1.2/CHANGELOG.md)
-- [Migrating from 0.x to 1.0](https://github.com/mdabrowski25/ksef-pdf/blob/v1.1.2/docs/migration-to-1.0.md)
-- [CIRFMF upstream tracking](https://github.com/mdabrowski25/ksef-pdf/blob/v1.1.2/UPSTREAM.md)
-- [1.1.2 release notes](https://github.com/mdabrowski25/ksef-pdf/blob/v1.1.2/docs/releases/v1.1.2.md)
+- [Changelog](https://github.com/mdabrowski25/ksef-pdf/blob/v1.1.3/CHANGELOG.md)
+- [Migrating from 0.x to 1.0](https://github.com/mdabrowski25/ksef-pdf/blob/v1.1.3/docs/migration-to-1.0.md)
+- [CIRFMF upstream tracking](https://github.com/mdabrowski25/ksef-pdf/blob/v1.1.3/UPSTREAM.md)
+- [1.1.3 release notes](https://github.com/mdabrowski25/ksef-pdf/blob/v1.1.3/docs/releases/v1.1.3.md)
 
 ## Development
 
@@ -376,5 +383,5 @@ npm pack --dry-run
 ## License
 
 The package is MIT licensed. Adapted third-party code and its license notices
-are documented in [THIRD_PARTY_NOTICES.md](https://github.com/mdabrowski25/ksef-pdf/blob/v1.1.2/THIRD_PARTY_NOTICES.md)
-and [LICENSES](https://github.com/mdabrowski25/ksef-pdf/tree/v1.1.2/LICENSES).
+are documented in [THIRD_PARTY_NOTICES.md](https://github.com/mdabrowski25/ksef-pdf/blob/v1.1.3/THIRD_PARTY_NOTICES.md)
+and [LICENSES](https://github.com/mdabrowski25/ksef-pdf/tree/v1.1.3/LICENSES).
