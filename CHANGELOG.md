@@ -6,6 +6,14 @@ All notable changes to this package are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.1.4] - 2026-11-09
+
+### Fixed
+
+- Print the KSeF number under QR1 whenever `nrKSeF` is supplied and `OFFLINE`
+  otherwise. Earlier versions printed `OFFLINE` whenever `qr2Code` was present,
+  which mislabelled offline invoices already accepted by KSeF.
+
 ## [1.1.3] - 2026-11-02
 
 ### Fixed
@@ -167,7 +175,8 @@ See [Migrating to 1.0.0](docs/migration-to-1.0.md) for breaking changes.
 - Initial Node.js package for FA(1), FA(2), FA(3), UPO(4.2), and UPO(4.3) PDF rendering.
 - ESM/CJS builds and Node-friendly XML input adapters.
 
-[Unreleased]: https://github.com/mdabrowski25/ksef-pdf/compare/v1.1.3...HEAD
+[Unreleased]: https://github.com/mdabrowski25/ksef-pdf/compare/v1.1.4...HEAD
+[1.1.4]: https://github.com/mdabrowski25/ksef-pdf/compare/v1.1.3...v1.1.4
 [1.1.3]: https://github.com/mdabrowski25/ksef-pdf/compare/v1.1.2...v1.1.3
 [1.1.2]: https://github.com/mdabrowski25/ksef-pdf/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/mdabrowski25/ksef-pdf/compare/v1.1.0...v1.1.1

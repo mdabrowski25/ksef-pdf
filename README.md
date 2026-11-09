@@ -231,9 +231,10 @@ const pdf = await renderPdfFromXml(xml, {
 });
 ```
 
-Provide both URLs for the two-code offline layout. When `qr2Code` is present,
-the QR1 caption uses `OFFLINE` instead of the KSeF number. No TEST/DEMO watermark
-option is exposed or rendered by this package.
+Provide both URLs for the two-code offline layout. The QR1 caption is `nrKSeF`
+once you supply it and `OFFLINE` until then, so add `nrKSeF` when rendering an
+offline invoice KSeF has accepted. No TEST/DEMO watermark option is exposed or
+rendered by this package.
 
 ## PEF invoices
 
@@ -360,10 +361,10 @@ LinkedIn: [https://www.linkedin.com/in/mateusz-dabrowski25](https://www.linkedin
 
 ## Release information
 
-- [Changelog](https://github.com/mdabrowski25/ksef-pdf/blob/v1.1.3/CHANGELOG.md)
-- [Migrating from 0.x to 1.0](https://github.com/mdabrowski25/ksef-pdf/blob/v1.1.3/docs/migration-to-1.0.md)
-- [CIRFMF upstream tracking](https://github.com/mdabrowski25/ksef-pdf/blob/v1.1.3/UPSTREAM.md)
-- [1.1.3 release notes](https://github.com/mdabrowski25/ksef-pdf/blob/v1.1.3/docs/releases/v1.1.3.md)
+- [Changelog](https://github.com/mdabrowski25/ksef-pdf/blob/v1.1.4/CHANGELOG.md)
+- [Migrating from 0.x to 1.0](https://github.com/mdabrowski25/ksef-pdf/blob/v1.1.4/docs/migration-to-1.0.md)
+- [CIRFMF upstream tracking](https://github.com/mdabrowski25/ksef-pdf/blob/v1.1.4/UPSTREAM.md)
+- [1.1.4 release notes](https://github.com/mdabrowski25/ksef-pdf/blob/v1.1.4/docs/releases/v1.1.4.md)
 
 ## Development
 
@@ -383,5 +384,5 @@ npm pack --dry-run
 ## License
 
 The package is MIT licensed. Adapted third-party code and its license notices
-are documented in [THIRD_PARTY_NOTICES.md](https://github.com/mdabrowski25/ksef-pdf/blob/v1.1.3/THIRD_PARTY_NOTICES.md)
-and [LICENSES](https://github.com/mdabrowski25/ksef-pdf/tree/v1.1.3/LICENSES).
+are documented in [THIRD_PARTY_NOTICES.md](https://github.com/mdabrowski25/ksef-pdf/blob/v1.1.4/THIRD_PARTY_NOTICES.md)
+and [LICENSES](https://github.com/mdabrowski25/ksef-pdf/tree/v1.1.4/LICENSES).
