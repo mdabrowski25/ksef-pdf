@@ -144,7 +144,7 @@ function generateQRCodeData(additionalData?: AdditionalDataTypes): Content[] {
             stack: [
               qrCode,
               {
-                text: additionalData.qr2Code ? i18n.t('invoice.qr1.offline') : additionalData.nrKSeF,
+                text: additionalData.nrKSeF || i18n.t('invoice.qr1.offline'),
                 alignment: 'center',
                 margin: [0, 8, 0, 0],
               },

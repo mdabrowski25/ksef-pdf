@@ -13,7 +13,7 @@ update this file and `CHANGELOG.md` before release.
 | Upstream release | `1.1.46` |
 | Upstream commit | `8a18843db12d0013a417500bb2f98bfe49b7d2a8` |
 | Imported | 2026-11-02 |
-| Local package release | `1.1.3` |
+| Local package release | `1.1.4` |
 
 ## Imported capabilities
 
@@ -72,6 +72,16 @@ update this file and `CHANGELOG.md` before release.
   otherwise appear literally as `&#x2F;` in invoice numbers.
 
 ## Local release history
+
+### 1.1.4 - 2026-11-09
+
+- Local difference to keep across synchronizations: the QR1 caption in
+  `generators/common/Stopka.ts` and `generators/PEF/Steeper.ts` is
+  `nrKSeF` when supplied and `OFFLINE` otherwise. Upstream 1.1.46 chooses it from
+  `qr2Code`, which contradicts the KSeF QR documentation for offline invoices
+  that have already been sent.
+- Runtime dependencies, public exports, licenses, and Node requirement are
+  unchanged. No migration from 1.1.x is required.
 
 ### 1.1.3 - 2026-11-02
 
